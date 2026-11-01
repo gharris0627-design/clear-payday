@@ -177,6 +177,68 @@ footer { color: var(--muted); font-size: 13px; text-align: center; }
   .erow { padding-bottom: 8px; border-bottom: 1px solid var(--line); }
 }
 @media (prefers-reduced-motion: no-preference) { .bar span { transition: width .3s ease; } }
+
+/* ---------- v2 additions ---------- */
+.seg { display: flex; gap: 4px; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 4px; width: fit-content; max-width: 100%; overflow-x: auto; }
+.seg button { border: 0; background: none; padding: 7px 16px; border-radius: 999px; font-weight: 600; font-size: 14px; color: var(--muted); white-space: nowrap; }
+.seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+.viewhead { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+.stepper { display: flex; align-items: center; gap: 8px; }
+.stepper b { font: 700 18px/1.2 var(--f-display); min-width: 0; }
+.arrow { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); font-size: 18px; line-height: 1; display: grid; place-items: center; }
+.arrow:disabled { opacity: .35; cursor: default; }
+.xbadge { display: inline-flex; align-items: center; font: 600 12px/1 var(--f-body); padding: 5px 9px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); }
+.events { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); }
+.evday { display: grid; grid-template-columns: 74px minmax(0, 1fr); gap: 10px; padding: 12px 16px; }
+.evday + .evday { border-top: 1px solid var(--line); }
+.evday .d { font: 500 12px/1.9 var(--f-mono); color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+.evlist { display: grid; gap: 4px; }
+.ev { display: flex; justify-content: space-between; gap: 10px; font-size: 14px; }
+.ev.in b { color: var(--accent); }
+.ev small { color: var(--muted); }
+.mini { display: grid; gap: 6px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px 16px; font-size: 14px; }
+.mini .ev span { color: var(--muted); }
+.yr { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 8px 16px; display: grid; }
+.yr-row { display: grid; grid-template-columns: 74px minmax(0, 1fr) 92px; gap: 12px; align-items: center; padding: 9px 0; }
+.yr-row + .yr-row { border-top: 1px solid var(--line); }
+.yr-row .m { font-weight: 700; font-size: 14px; display: grid; gap: 2px; }
+.yr-row .m small { font: 500 11px/1.2 var(--f-mono); color: var(--muted); }
+.yr-row .m small.x { color: var(--accent); }
+.yr-row .v { text-align: right; font-weight: 700; font-size: 14px; }
+.ci-banner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: 8px; padding: 12px 14px; }
+.ci-banner .prog { color: var(--muted); font-size: 14px; }
+.progress { height: 6px; border-radius: 3px; background: var(--sunk); overflow: hidden; }
+.progress span { display: block; height: 100%; background: var(--accent); }
+.ci-list { display: grid; }
+.ci-item { display: grid; grid-template-columns: 26px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 0; border-top: 1px solid var(--line); cursor: pointer; }
+.ci-item:first-child { border-top: 0; }
+.ci-item input { width: 22px; height: 22px; accent-color: var(--accent); margin: 0; }
+.ci-item .t { display: grid; gap: 2px; }
+.ci-item .t small { color: var(--muted); font-size: 13px; }
+.ci-item.done .t span, .ci-item.done b { text-decoration: line-through; color: var(--muted); }
+.ci-sec { display: grid; gap: 4px; }
+.ci-sec h3 { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+.ci-total { display: flex; justify-content: space-between; align-items: center; gap: 12px; background: var(--accent-soft); border-radius: 8px; padding: 14px 16px; font-weight: 700; }
+.ci-total b { font: 800 24px/1 var(--f-display); color: var(--spend); }
+.ci-total b.short { color: var(--warn); }
+.income-card { border: 1px solid var(--line); border-radius: var(--r); padding: 16px; display: grid; gap: 16px; }
+.income-card .ihead { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.opt-check { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; align-items: start; font-weight: 600; font-size: 14px; cursor: pointer; }
+.opt-check input { width: 20px; height: 20px; margin: 1px 0 0; accent-color: var(--accent); }
+.opt-check small { display: block; font-weight: 400; color: var(--muted); font-size: 13px; margin-top: 2px; }
+.sub-block { border-left: 3px solid var(--accent); padding-left: 14px; display: grid; gap: 14px; }
+.est { font: 500 10px/1 var(--f-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); border-radius: 4px; padding: 3px 5px; margin-left: 6px; vertical-align: 2px; }
+.attn-item .act { margin-top: 8px; }
+.stub-act { margin-top: 10px; }
+.bills-ed .rowhead, .bills-ed .erow { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1.3fr) minmax(0, 1.3fr) 40px; }
+.tools-grid { display: grid; gap: 20px; }
+@media (max-width: 720px) {
+  .bills-ed .erow { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 40px; }
+  .bills-ed .erow .n { grid-column: 1 / -1; }
+  .bills-ed .erow .due { grid-column: 1 / 3; }
+  .yr-row { grid-template-columns: 58px minmax(0, 1fr) 80px; gap: 10px; }
+  .evday { grid-template-columns: 62px minmax(0, 1fr); }
+}
 </style>
 </head>
 <body>
@@ -193,7 +255,7 @@ footer { color: var(--muted); font-size: 13px; text-align: center; }
       <button role="tab" data-tab="bills">Bills</button>
       <button role="tab" data-tab="spend">Spending</button>
       <button role="tab" data-tab="goals">Goals</button>
-      <button role="tab" data-tab="backup">Backup</button>
+      <button role="tab" data-tab="tools">Tools</button>
     </nav>
   </header>
 
@@ -206,64 +268,71 @@ footer { color: var(--muted); font-size: 13px; text-align: center; }
 
   <main id="view"></main>
 
-  <footer>Your numbers are saved only in this browser on this device. Use Backup to move them to another device.</footer>
+  <footer>Your budget numbers are saved only in this browser on this device. Use Tools to back them up or move them.</footer>
 </div>
 
 <script>
 (function () {
   const KEY = "clearpayday.v1";
   const DAY = 86400000;
-  const today = (() => { const d = new Date(); d.setHours(0,0,0,0); return d; })();
+  const today = (() => { const d = new Date(); d.setHours(0, 0, 0, 0); return d; })();
 
-  // ---------- dates & money ----------
+  // ---------- helpers ----------
   const pad = n => String(n).padStart(2, "0");
-  const iso = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
-  const parse = s => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s || ""); return m ? new Date(+m[1], +m[2]-1, +m[3]) : null; };
+  const iso = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  const parse = s => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s || ""); return m ? new Date(+m[1], +m[2] - 1, +m[3]) : null; };
   const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+  const addMonths = (d, n) => new Date(d.getFullYear(), d.getMonth() + n, 1);
+  const daysBetween = (a, b) => Math.round((b - a) / DAY);
   const dim = (y, m) => new Date(y, m + 1, 0).getDate();
   const fmtShort = d => d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
   const fmtDay = d => d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+  const fmtMonth = d => d.toLocaleDateString("en-US", { month: "long", year: "numeric" });
   const r2 = n => Math.round(n * 100) / 100;
+  const sum = (arr, f = x => x) => arr.reduce((s, x) => s + (+f(x) || 0), 0);
   const money = n => {
     const v = r2(n);
     return v.toLocaleString("en-US", { style: "currency", currency: "USD", minimumFractionDigits: v % 1 ? 2 : 0, maximumFractionDigits: 2 });
   };
-  const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const uid = () => Math.random().toString(36).slice(2, 9);
+  const ordinal = n => { const s = ["th", "st", "nd", "rd"], v = n % 100; return n + (s[(v - 20) % 10] || s[v] || s[0]); };
+  const ym = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}`;
 
   const FREQ = {
-    weekly:   { label: "Weekly",        perYear: 52 },
-    biweekly: { label: "Every 2 weeks", perYear: 26 },
-    semi:     { label: "Twice a month", perYear: 24 },
-    monthly:  { label: "Monthly",       perYear: 12 }
+    weekly:   { label: "Weekly",        perYear: 52, typical: 4 },
+    biweekly: { label: "Every 2 weeks", perYear: 26, typical: 2 },
+    semi:     { label: "Twice a month", perYear: 24, typical: 2 },
+    monthly:  { label: "Monthly",       perYear: 12, typical: 1 }
   };
-
+  const BILLF = {
+    monthly:    { label: "Monthly",        months: 1 },
+    quarterly:  { label: "Every 3 months", months: 3 },
+    semiannual: { label: "Every 6 months", months: 6 },
+    yearly:     { label: "Yearly",         months: 12 }
+  };
   const KINDS = { save: "Savings", debt: "Debt payoff", trip: "Vacation", gift: "Gifts & occasions" };
   const isPlanned = g => g.kind === "trip" || g.kind === "gift";
-  const ym = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}`;
-  function monthsUntil(by) {
-    const m = /^(\d{4})-(\d{2})$/.exec(by || ""); if (!m) return 0;
-    return Math.max(1, (+m[1] * 12 + (+m[2] - 1)) - (today.getFullYear() * 12 + today.getMonth()));
-  }
-  function goalMonthly(g) {
-    if (isPlanned(g) && +g.target > 0 && monthsUntil(g.by)) return Math.ceil(+g.target / monthsUntil(g.by));
-    return +g.amt || 0;
-  }
-  const spendMonthlyOf = () => state.spend.reduce((s, x) => s + (+x.amt || 0) * (x.per === "week" ? 52 / 12 : 1), 0);
+  const isMonthlyBill = b => (b.freq || "monthly") === "monthly";
 
   // ---------- state ----------
+  const newIncome = name => ({ id: uid(), name, freq: "biweekly", pay: 0, next: "", semiA: 1, semiB: 15, variable: false, actuals: {}, change: null });
   function sample() {
     const toFri = (5 - today.getDay() + 7) % 7 || 7;
+    const inMonths = (n, day) => iso(new Date(today.getFullYear(), today.getMonth() + n, day));
     return {
-      example: true, freq: "biweekly", pay: 1850, next: iso(addDays(today, toFri)),
+      example: true,
+      incomes: [{ id: uid(), name: "My paycheck", freq: "biweekly", pay: 1950, next: iso(addDays(today, toFri)), semiA: 1, semiB: 15, variable: false, actuals: {}, change: null }],
       bills: [
-        { id: uid(), name: "Rent", amt: 1350, day: 1 },
-        { id: uid(), name: "Internet", amt: 70, day: 8 },
-        { id: uid(), name: "Car payment", amt: 385, day: 12 },
-        { id: uid(), name: "Streaming", amt: 22.99, day: 15 },
-        { id: uid(), name: "Phone", amt: 85, day: 18 },
-        { id: uid(), name: "Electric", amt: 140, day: 22 },
-        { id: uid(), name: "Car insurance", amt: 160, day: 27 }
+        { id: uid(), name: "Rent", amt: 1350, freq: "monthly", day: 1 },
+        { id: uid(), name: "Internet", amt: 70, freq: "monthly", day: 8 },
+        { id: uid(), name: "Car payment", amt: 385, freq: "monthly", day: 12 },
+        { id: uid(), name: "Streaming", amt: 22.99, freq: "monthly", day: 15 },
+        { id: uid(), name: "Phone", amt: 85, freq: "monthly", day: 18 },
+        { id: uid(), name: "Electric", amt: 140, freq: "monthly", day: 22 },
+        { id: uid(), name: "Car insurance", amt: 160, freq: "monthly", day: 27 },
+        { id: uid(), name: "Car registration", amt: 240, freq: "yearly", day: 15, due: inMonths(5, 15) },
+        { id: uid(), name: "Warehouse club membership", amt: 65, freq: "yearly", day: 10, due: inMonths(8, 10) }
       ],
       spend: [
         { id: uid(), name: "Groceries", amt: 120, per: "week" },
@@ -276,258 +345,544 @@ footer { color: var(--muted); font-size: 13px; text-align: center; }
         { id: uid(), name: "Credit card payoff", amt: 150, kind: "debt" },
         { id: uid(), name: "Summer trip", amt: 0, kind: "trip", target: 1200, by: ym(new Date(today.getFullYear(), today.getMonth() + 7, 1)) },
         { id: uid(), name: "Holiday gifts", amt: 0, kind: "gift", target: 600, by: ym(new Date(today.getFullYear(), today.getMonth() + 12, 1)) }
-      ], cushion: 10, split: "balanced"
+      ],
+      cushion: 10, split: "balanced", smooth: false, checkins: {}, paid: {}, dashView: "checks"
     };
   }
-  const blank = () => ({ example: false, freq: "biweekly", pay: 0, next: "", bills: [], spend: [], goals: [] });
+  const blank = () => ({ example: false, incomes: [newIncome("My paycheck")], bills: [], spend: [], goals: [], cushion: 10, split: "balanced", smooth: false, checkins: {}, paid: {}, dashView: "checks" });
 
   function valid(s) {
-    return s && typeof s === "object" && FREQ[s.freq] && Array.isArray(s.bills) && Array.isArray(s.goals);
+    return s && typeof s === "object" && Array.isArray(s.bills) && Array.isArray(s.goals) && (Array.isArray(s.incomes) || FREQ[s.freq]);
+  }
+  function migrate(s) {
+    if (!Array.isArray(s.incomes)) {
+      s.incomes = [{ id: uid(), name: "My paycheck", freq: s.freq || "biweekly", pay: +s.pay || 0, next: s.next || "", semiA: s.semiA || 1, semiB: s.semiB || 15, variable: false, actuals: {}, change: null }];
+    }
+    s.incomes.forEach(i => { if (!FREQ[i.freq]) i.freq = "biweekly"; if (!i.actuals || typeof i.actuals !== "object") i.actuals = {}; });
+    s.bills.forEach(b => { if (!BILLF[b.freq]) b.freq = "monthly"; });
+    if (!Array.isArray(s.spend)) s.spend = [];
+    if (!s.checkins || typeof s.checkins !== "object") s.checkins = {};
+    if (!s.paid || typeof s.paid !== "object") s.paid = {};
+    if (!["checks", "week", "month", "year"].includes(s.dashView)) s.dashView = "checks";
+    return s;
   }
   let state;
   try { const raw = localStorage.getItem(KEY); state = raw ? JSON.parse(raw) : null; } catch (e) { state = null; }
-  if (!valid(state)) state = sample();
-  if (!Array.isArray(state.spend)) state.spend = [];
+  state = migrate(valid(state) ? state : sample());
   const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} };
 
-  let tab = "dash";
+  let tab = "dash", ciKey = null, weekOff = 0, monthOff = 0;
 
-  // ---------- paycheck math ----------
-  function stepFn(freq, anchorDay) {
-    if (freq === "weekly") return d => addDays(d, 7);
-    if (freq === "biweekly") return d => addDays(d, 14);
-    if (freq === "semi") return d => d.getDate() < 15 ? new Date(d.getFullYear(), d.getMonth(), 15) : new Date(d.getFullYear(), d.getMonth() + 1, 1);
-    return d => { const y = d.getFullYear(), m = d.getMonth() + 1; return new Date(y, m, Math.min(anchorDay, dim(y, m))); };
-  }
-  function semiDays() {
-    const a = +state.semiA || 1, b = +state.semiB || 15;
-    return [Math.min(a, b), Math.max(a, b)];
-  }
-  function paydays(count) {
-    if (state.freq === "semi") {
-      const [a, b] = semiDays(); const out = [];
-      for (let i = 0; out.length < count + 1 && i < 24; i++) {
-        const y = today.getFullYear(), m = today.getMonth() + i;
-        const yy = y + Math.floor(m / 12), mm = m % 12, last = dim(yy, mm);
-        [a, b].forEach(day => { const d = new Date(yy, mm, Math.min(day, last)); if (d >= today && !out.some(x => +x === +d)) out.push(d); });
-      }
-      return out.slice(0, count + 1);
-    }
-    let d = parse(state.next);
-    if (!d) return [];
-    const step = stepFn(state.freq, d.getDate());
-    let guard = 0;
-    while (d < today && guard++ < 500) d = step(d);
-    const out = [d];
-    while (out.length < count + 1) out.push(step(out[out.length - 1]));
-    return out;
-  }
-  function occurrences(bill, start, end) {
-    const out = [];
-    let y = start.getFullYear(), m = start.getMonth() - 1;
-    for (let i = 0; i < 4; i++, m++) {
+  // ---------- schedules ----------
+  function eachMonth(from, to, fn) {
+    for (let i = 0, y = from.getFullYear(), m = from.getMonth(); i < 60; i++, m++) {
       const yy = y + Math.floor(m / 12), mm = ((m % 12) + 12) % 12;
-      const d = new Date(yy, mm, Math.min(Math.max(1, bill.day | 0), dim(yy, mm)));
-      if (d >= start && d < end) out.push({ ...bill, date: d });
+      if (new Date(yy, mm, 1) >= to) break;
+      fn(yy, mm);
+    }
+  }
+  function schedDates(sch, from, to) {
+    const out = [];
+    if (sch.freq === "semi") {
+      const a = Math.min(+sch.semiA || 1, +sch.semiB || 15), b = Math.max(+sch.semiA || 1, +sch.semiB || 15);
+      eachMonth(from, to, (y, m) => [a, b].forEach(day => {
+        const d = new Date(y, m, Math.min(day, dim(y, m)));
+        if (d >= from && d < to && !out.some(x => +x === +d)) out.push(d);
+      }));
+      return out.sort((x, y) => x - y);
+    }
+    const anchor = parse(sch.next); if (!anchor) return out;
+    if (sch.freq === "monthly") {
+      const day = anchor.getDate();
+      eachMonth(from, to, (y, m) => { const d = new Date(y, m, Math.min(day, dim(y, m))); if (d >= from && d < to) out.push(d); });
+      return out;
+    }
+    const step = sch.freq === "weekly" ? 7 : 14;
+    let d = addDays(anchor, Math.floor(daysBetween(anchor, from) / step) * step);
+    while (d < from) d = addDays(d, step);
+    while (d < to) { out.push(d); d = addDays(d, step); }
+    return out;
+  }
+  const incomeReady = inc => +inc.pay > 0 && (inc.freq === "semi" || !!parse(inc.next));
+  function incomePaydays(inc, from, to) {
+    const cd = inc.change && parse(inc.change.date);
+    if (!cd || !(+inc.change.pay > 0)) return schedDates(inc, from, to).map(d => ({ d, amt: +inc.pay || 0 }));
+    const old = schedDates(inc, from, cd < to ? cd : to).filter(d => d < cd).map(d => ({ d, amt: +inc.pay || 0 }));
+    const ns = { freq: inc.change.freq, next: inc.change.date, semiA: inc.change.semiA, semiB: inc.change.semiB };
+    const nw = to > cd ? schedDates(ns, cd > from ? cd : from, to).filter(d => d >= cd).map(d => ({ d, amt: +inc.change.pay || 0 })) : [];
+    return old.concat(nw);
+  }
+  function allPaychecks(from, to) {
+    const map = new Map();
+    state.incomes.filter(incomeReady).forEach(inc => incomePaydays(inc, from, to).forEach(({ d, amt }) => {
+      const k = iso(d);
+      const act = inc.actuals ? inc.actuals[k] : undefined;
+      const has = act !== undefined && act !== null && act !== "";
+      const a = has ? +act : amt;
+      if (!map.has(k)) map.set(k, { date: d, key: k, items: [], total: 0 });
+      const e = map.get(k);
+      e.items.push({ id: inc.id, name: inc.name || "Paycheck", amt: a, est: !!inc.variable && !has, variable: !!inc.variable });
+      e.total = r2(e.total + a);
+    }));
+    return [...map.values()].sort((a, b) => a.date - b.date);
+  }
+
+  // ---------- bills ----------
+  function billDates(b, from, to) {
+    const out = [];
+    if (isMonthlyBill(b)) {
+      const day = Math.max(1, b.day | 0);
+      eachMonth(from, to, (y, m) => { const d = new Date(y, m, Math.min(day, dim(y, m))); if (d >= from && d < to) out.push(d); });
+      return out;
+    }
+    const anchor = parse(b.due); if (!anchor) return out;
+    const step = BILLF[b.freq].months, day = anchor.getDate();
+    const am = anchor.getFullYear() * 12 + anchor.getMonth(), fm = from.getFullYear() * 12 + from.getMonth();
+    let k = Math.floor((fm - am) / step) - 1;
+    for (let n = 0; n < 300; n++, k++) {
+      const mi = am + k * step, y = Math.floor(mi / 12), m = mi - y * 12;
+      const d = new Date(y, m, Math.min(day, dim(y, m)));
+      if (d >= to) break;
+      if (d >= from) out.push(d);
     }
     return out;
   }
-  function plan() {
-    const per = FREQ[state.freq].perYear;
-    const count = state.freq === "weekly" ? 5 : 4;
-    const days = paydays(count);
-    const goalsMonthly = state.goals.reduce((s, g) => s + goalMonthly(g), 0);
-    const goalsPer = r2(goalsMonthly * 12 / per);
-    const spendMonthly = r2(state.spend.reduce((s, x) => s + (+x.amt || 0) * (x.per === "week" ? 52 / 12 : 1), 0));
-    const spendPer = r2(spendMonthly * 12 / per);
-    const checks = [];
-    for (let i = 0; i < days.length - 1; i++) {
-      const bills = state.bills.flatMap(b => occurrences(b, days[i], days[i + 1])).sort((a, b) => a.date - b.date);
-      const billTotal = r2(bills.reduce((s, b) => s + (+b.amt || 0), 0));
-      const left = r2((+state.pay || 0) - billTotal - spendPer - goalsPer);
-      checks.push({ date: days[i], until: addDays(days[i + 1], -1), bills, billTotal, spendPer, goalsPer, left });
-    }
-    const beforeNext = days.length ? state.bills.flatMap(b => occurrences(b, today, days[0])).sort((a, b) => a.date - b.date) : [];
-    const billsMonthly = r2(state.bills.reduce((s, b) => s + (+b.amt || 0), 0));
-    const incomeMonthly = r2((+state.pay || 0) * per / 12);
-    return { checks, beforeNext, goalsMonthly: r2(goalsMonthly), spendMonthly, billsMonthly, incomeMonthly, freeMonthly: r2(incomeMonthly - billsMonthly - spendMonthly - goalsMonthly) };
+  const occ = (from, to) => state.bills.flatMap(b => billDates(b, from, to).map(d => ({ ...b, date: d, key: b.id + "|" + iso(d) }))).sort((a, b) => a.date - b.date);
+  function nmRate(b, day) {
+    const span = BILLF[b.freq].months * 31 + 3;
+    const nd = billDates(b, addDays(day, 1), addDays(day, span + 1))[0];
+    if (!nd) return 0;
+    const prevs = billDates(b, addDays(nd, -span), nd);
+    let start = prevs.length ? prevs[prevs.length - 1] : addDays(nd, -Math.round(BILLF[b.freq].months * 30.44));
+    if (day >= today && start < today) start = today;
+    return (+b.amt || 0) / Math.max(1, daysBetween(start, nd));
   }
+  function nmAside(from, to) {
+    const nm = state.bills.filter(b => !isMonthlyBill(b) && +b.amt > 0);
+    if (!nm.length) return 0;
+    let s = 0;
+    for (let d = new Date(from); d < to; d = addDays(d, 1)) nm.forEach(b => { s += nmRate(b, d); });
+    return r2(s);
+  }
+
+  // ---------- rates ----------
+  const spendMonthlyOf = () => sum(state.spend, x => (+x.amt || 0) * (x.per === "week" ? 52 / 12 : 1));
+  function monthsUntil(by) {
+    const m = /^(\d{4})-(\d{2})$/.exec(by || ""); if (!m) return 0;
+    return Math.max(1, (+m[1] * 12 + (+m[2] - 1)) - (today.getFullYear() * 12 + today.getMonth()));
+  }
+  function goalMonthly(g) {
+    if (isPlanned(g) && +g.target > 0 && monthsUntil(g.by)) return Math.ceil(+g.target / monthsUntil(g.by));
+    return +g.amt || 0;
+  }
+  const goalsMonthlyOf = () => sum(state.goals, goalMonthly);
+  const monthlyBillsMonthly = () => sum(state.bills.filter(isMonthlyBill), b => b.amt);
+  const billsMonthlyAll = () => sum(state.bills, b => (+b.amt || 0) / BILLF[b.freq || "monthly"].months);
+  const perDay = m => m * 12 / 365;
+
+  // ---------- timeline ----------
+  let _tl = null, _dm = {};
+  function timeline() {
+    if (_tl) return _tl;
+    const pcs = allPaychecks(addDays(today, -70), addDays(today, 440));
+    _tl = [];
+    for (let i = 0; i < pcs.length - 1; i++) _tl.push({ ...pcs[i], start: pcs[i].date, end: pcs[i + 1].date });
+    return _tl;
+  }
+  function detail(p, smooth = !!state.smooth) {
+    const mk = p.key + (smooth ? "s" : "l");
+    if (_dm[mk]) return _dm[mk];
+    const days = daysBetween(p.start, p.end);
+    const bills = occ(p.start, p.end);
+    const mb = bills.filter(isMonthlyBill), nb = bills.filter(b => !isMonthlyBill(b));
+    const lump = r2(sum(mb, b => b.amt));
+    const reserve = smooth ? r2(perDay(monthlyBillsMonthly()) * days) : lump;
+    const aside = nmAside(p.start, p.end);
+    const spend = r2(perDay(spendMonthlyOf()) * days), goals = r2(perDay(goalsMonthlyOf()) * days);
+    const left = r2(p.total - reserve - aside - spend - goals);
+    return (_dm[mk] = { days, bills, mb, nb, lump, reserve, aside, spend, goals, left });
+  }
+  function fundNeed() {
+    const end = addDays(today, 365);
+    let bal = 0, min = 0;
+    for (const p of timeline().filter(p => p.start > today && p.start < end)) {
+      const d = detail(p, true);
+      bal += d.reserve - d.lump; min = Math.min(min, bal);
+    }
+    return Math.ceil(-min);
+  }
+  function summary(from, to) {
+    const pcs = allPaychecks(from, to), due = occ(from, to), days = daysBetween(from, to);
+    const income = r2(sum(pcs, p => p.total));
+    const mBills = state.smooth ? perDay(monthlyBillsMonthly()) * days : sum(due.filter(isMonthlyBill), b => b.amt);
+    const bills = r2(mBills + nmAside(from, to));
+    const spend = r2(perDay(spendMonthlyOf()) * days), goals = r2(perDay(goalsMonthlyOf()) * days);
+    return { pcs, due, income, bills, spend, goals, left: r2(income - bills - spend - goals) };
+  }
+  function extraChecks(y, m) {
+    const from = new Date(y, m, 1), to = new Date(y, m + 1, 1);
+    let extra = 0;
+    state.incomes.filter(incomeReady).forEach(inc => {
+      const n = incomePaydays(inc, from, to).length;
+      const f = inc.change && parse(inc.change.date) && parse(inc.change.date) <= from ? inc.change.freq : inc.freq;
+      if ((f === "weekly" || f === "biweekly") && n > FREQ[f].typical) extra += n - FREQ[f].typical;
+    });
+    return extra;
+  }
+
+  // ---------- check-in ----------
+  function ciItems(p) {
+    const d = detail(p), items = [];
+    if (d.reserve > 0) items.push({ k: "bills", label: state.smooth ? "Move to your bill fund" : "Set aside for bills due this paycheck", amt: d.reserve });
+    if (d.aside > 0) items.push({ k: "aside", label: "Set aside for yearly & quarterly bills", amt: d.aside });
+    state.goals.forEach(g => { const a = r2(perDay(goalMonthly(g)) * d.days); if (a > 0) items.push({ k: "g-" + g.id, label: `Move to ${g.name || "your goal"}`, amt: a }); });
+    d.bills.forEach(b => items.push({ k: "b:" + b.key, label: `Pay ${b.name || "bill"}`, amt: b.amt, bill: b }));
+    return items;
+  }
+  const isDone = (pk, it) => it.bill ? !!state.paid[it.bill.key] : !!(state.checkins[pk] && state.checkins[pk].done && state.checkins[pk].done[it.k]);
+  function progress(p) { const its = ciItems(p); return { total: its.length, done: its.filter(it => isDone(p.key, it)).length }; }
 
   // ---------- views ----------
   const view = document.getElementById("view");
+  const tiles = s => `<div class="month">
+      <div><span class="label">Coming in</span><b>${money(s.income)}</b></div>
+      <div><span class="label">Bills</span><b>${money(s.bills)}</b></div>
+      <div><span class="label">Spending</span><b>${money(s.spend)}</b></div>
+      <div><span class="label">Goals</span><b>${money(s.goals)}</b></div>
+      <div><span class="label">Left over</span><b style="color:${s.left < 0 ? "var(--warn)" : "var(--spend)"}">${money(s.left)}</b></div>
+    </div>`;
+
+  function emptyDash() {
+    return `<div class="empty">
+      <span class="label">Step 1 of 4</span>
+      <h2>Add your paycheck to see your plan</h2>
+      <p class="note" style="margin:0">Tell us how often you're paid, how much lands in your account, and your next payday.</p>
+      <button class="btn primary" data-go="pay">Set up my paycheck</button>
+    </div>`;
+  }
 
   function renderDash() {
-    if (!(+state.pay > 0) || (state.freq !== "semi" && !parse(state.next))) {
-      return `<div class="empty">
-        <span class="label">Step 1 of 4</span>
-        <h2>Add your paycheck to see your plan</h2>
-        <p class="note" style="margin:0">Tell us how often you're paid, how much lands in your account, and your next payday.</p>
-        <button class="btn primary" data-go="pay">Set up my paycheck</button>
+    if (!state.incomes.some(incomeReady)) return emptyDash();
+    const tl = timeline();
+    const cur = [...tl].reverse().find(p => p.start <= today);
+    const up = tl.filter(p => p.start > today);
+    const hero = cur && +cur.start === +today ? cur : up[0];
+    if (!hero) return emptyDash();
+    const h = detail(hero);
+    const short0 = h.left < 0;
+
+    // check-in banner
+    let banner = "";
+    if (cur && cur !== hero && daysBetween(cur.start, today) < 16) {
+      const pr = progress(cur);
+      if (pr.total && pr.done < pr.total) banner = `<div class="ci-banner">
+        <div style="display:grid;gap:6px;min-width:0;flex:1 1 220px">
+          <b>Payday check-in · ${fmtShort(cur.start)} paycheck</b>
+          <span class="prog">${pr.done} of ${pr.total} done</span>
+          <div class="progress"><span style="width:${pr.done / pr.total * 100}%"></span></div>
+        </div>
+        <button class="btn primary" data-act="ci" data-key="${cur.key}">${pr.done ? "Continue" : "Start check-in"}</button>
       </div>`;
     }
-    const p = plan();
-    const c0 = p.checks[0];
-    const short0 = c0.left < 0;
 
+    // attention
     const attn = [];
-    if (p.beforeNext.length) {
-      const tot = p.beforeNext.reduce((s, b) => s + (+b.amt || 0), 0);
-      attn.push({ cls: "info", tag: "Before payday",
-        text: `${p.beforeNext.map(b => `<b>${esc(b.name)}</b> (${money(b.amt)}, ${fmtShort(b.date)})`).join(", ")} ${p.beforeNext.length > 1 ? "are" : "is"} due before your ${fmtShort(c0.date)} paycheck. Keep ${money(tot)} in your account to cover ${p.beforeNext.length > 1 ? "them" : "it"}.` });
+    if (cur) {
+      const dueSoon = detail(cur).bills.filter(b => b.date >= today && !state.paid[b.key]);
+      const nmSoon = dueSoon.filter(b => !isMonthlyBill(b)), mSoon = dueSoon.filter(isMonthlyBill);
+      if (mSoon.length) attn.push({ cls: "info", tag: "Before payday",
+        text: `${mSoon.map(b => `<b>${esc(b.name)}</b> (${money(b.amt)}, ${fmtShort(b.date)})`).join(", ")} ${mSoon.length > 1 ? "are" : "is"} due before your ${fmtShort(hero.start)} paycheck. Keep ${money(sum(mSoon, b => b.amt))} in your account to cover ${mSoon.length > 1 ? "them" : "it"}.` });
+      if (nmSoon.length) attn.push({ cls: "info", tag: "Set-aside bill", text: `${nmSoon.map(b => `<b>${esc(b.name)}</b> (${money(b.amt)}, ${fmtShort(b.date)})`).join(", ")} comes from the money you've set aside for yearly bills.` });
     }
-    p.checks.forEach((c, i) => {
-      if (c.left < 0) {
-        const fromPrev = i > 0 && p.checks[i - 1].left + c.left >= 0;
-        attn.push({ cls: "", tag: `Short ${fmtShort(c.date)}`,
-          text: `Your ${fmtShort(c.date)} paycheck is <b>${money(-c.left)} short</b> of its bills, spending and goals.` +
-            (i > 0 ? (fromPrev ? ` Set aside ${money(-c.left)} from your ${fmtShort(p.checks[i - 1].date)} paycheck to cover it.` : ` Your ${fmtShort(p.checks[i - 1].date)} paycheck can't fully cover it either, so look at moving a due date or trimming spending or a goal.`)
-                   : ` Cover it from money already in your account, or move a due date.`) });
-      }
+    state.incomes.filter(incomeReady).forEach(inc => {
+      const cd = inc.change && parse(inc.change.date);
+      if (!cd || cd < today || !(+inc.change.pay > 0)) return;
+      const before = incomePaydays(inc, addDays(cd, -40), cd).map(x => x.d).pop();
+      const after = incomePaydays(inc, cd, addDays(cd, 40)).map(x => x.d)[0];
+      if (before && after) attn.push({ cls: "info", tag: "Schedule change",
+        text: `${esc(inc.name || "Your pay")} switches to <b>${FREQ[inc.change.freq].label.toLowerCase()}</b>. Your ${fmtShort(before)} paycheck has to last <b>${daysBetween(before, after)} days</b>, until ${fmtShort(after)}. The plan below already accounts for it.` });
     });
-    const biggest = p.checks.reduce((a, c) => c.billTotal > a.billTotal ? c : a, p.checks[0]);
-    if (!attn.some(a => a.cls === "") && biggest.billTotal > 0) {
-      attn.push({ cls: "info", tag: "Heaviest check", text: `Your ${fmtShort(biggest.date)} paycheck carries the most bills (${money(biggest.billTotal)}). Everything is covered.` });
+    const next6 = up.slice(0, 6);
+    const shorts = next6.map((p, i) => ({ p, i, d: detail(p) })).filter(x => x.d.left < 0);
+    shorts.slice(0, 2).forEach(({ p, i, d }) => {
+      const prev = i > 0 ? next6[i - 1] : null;
+      const canPrev = prev && detail(prev).left + d.left >= 0;
+      attn.push({ cls: "", tag: `Short ${fmtShort(p.start)}`,
+        text: `Your ${fmtShort(p.start)} paycheck is <b>${money(-d.left)} short</b> of its bills, spending and goals.` +
+          (prev ? (canPrev ? ` Set aside ${money(-d.left)} from your ${fmtShort(prev.start)} paycheck to cover it.` : ` Your ${fmtShort(prev.start)} paycheck can't fully cover it either.`) : ` Cover it from money already in your account.`) });
+    });
+    if (!state.smooth && shorts.length && monthlyBillsMonthly() > 0) {
+      const sm = next6.map(p => detail(p, true));
+      const ok = sm.every(x => x.left >= 0);
+      const need = fundNeed();
+      attn.push({ cls: "info", tag: "Fix it", act: ok ? `<div class="act"><button class="btn primary" data-act="smooth-on">Even out my paychecks</button></div>` : "",
+        text: ok
+          ? `Set aside about <b>${money(sm[0].reserve)}</b> for bills from <b>every</b> paycheck instead of paying each bill from the check before it. None of your next ${sm.length} paychecks would come up short.${need > 0 ? ` To start, put ${money(need)} in a separate bills account or envelope.` : ""}`
+          : `Even with the same amount set aside from every check, your pay doesn't cover everything. Trim everyday spending or lower a goal.` });
     }
+    if (state.smooth) {
+      const need = fundNeed();
+      attn.push({ cls: "info", tag: "Bill fund", text: `You set aside the same amount for bills from every paycheck.${need > 0 ? ` Start your bill fund with <b>${money(need)}</b> so it never runs short before a big bill.` : " Your bill fund stays covered all year."}` });
+    }
+    hero.items.filter(x => x.est).forEach(x => attn.push({ cls: "info", tag: "Estimate", text: `This plan uses your estimate of ${money(x.amt)} for ${esc(x.name)}. Enter the real amount at your payday check-in and the plan updates.` }));
 
-    const scale = Math.max(+state.pay || 0, ...p.checks.map(c => c.billTotal + c.spendPer + c.goalsPer));
-    const pct = n => Math.max(0, n) / scale * 100;
+    // hero lines
+    const payLines = hero.items.length > 1
+      ? hero.items.map(x => `<div class="line-row"><span>${esc(x.name)}${x.est ? '<span class="est">est.</span>' : ""}</span><b>${money(x.amt)}</b></div>`).join("")
+      : `<div class="line-row"><span>Take-home pay${hero.items[0].est ? '<span class="est">est.</span>' : ""}</span><b>${money(hero.total)}</b></div>`;
+    const isToday = +hero.start === +today;
 
-    const checkCard = (c, i) => {
-      const over = Math.max(0, -c.left);
-      const billsW = pct(Math.min(c.billTotal, +state.pay));
-      const spendW = pct(Math.min(c.spendPer, Math.max(0, +state.pay - c.billTotal)));
-      const goalsW = pct(Math.min(c.goalsPer, Math.max(0, +state.pay - c.billTotal - c.spendPer)));
-      return `<article class="check">
-        <div class="check-top">
-          <div>
-            <span class="label">Check ${i + 1} of ${p.checks.length}</span>
-            <h3>${fmtDay(c.date)}</h3>
-            <span class="note">Covers ${fmtShort(c.date)} – ${fmtShort(c.until)}</span>
-          </div>
-          <div class="amt"><span class="label">${c.left < 0 ? "Short" : "Left over"}</span><b class="${c.left < 0 ? "short" : ""}">${money(Math.abs(c.left))}</b></div>
-        </div>
-        <div class="bar" role="img" aria-label="Bills ${money(c.billTotal)}, spending ${money(c.spendPer)}, goals ${money(c.goalsPer)}, ${c.left < 0 ? "short " + money(over) : "left over " + money(c.left)}">
-          <span style="width:${billsW}%;background:var(--bills)"></span>
-          <span style="width:${spendW}%;background:var(--living)"></span>
-          <span style="width:${goalsW}%;background:var(--goals)"></span>
-          ${c.left > 0 ? `<span style="width:${pct(c.left)}%;background:var(--spend)"></span>` : ""}
-          ${over ? `<span class="over" style="width:${pct(over)}%"></span>` : ""}
-        </div>
-        <div class="legend">
-          <span><i class="dot" style="background:var(--bills)"></i>Bills ${money(c.billTotal)}</span>
-          <span><i class="dot" style="background:var(--living)"></i>Spending ${money(c.spendPer)}</span>
-          <span><i class="dot" style="background:var(--goals)"></i>Goals ${money(c.goalsPer)}</span>
-        </div>
-        <ul class="bill-list">
-          ${c.bills.length ? c.bills.map(b => `<li><span class="d">${fmtShort(b.date)}</span><span>${esc(b.name || "Unnamed bill")}</span><span>${money(b.amt)}</span></li>`).join("")
-            : `<li class="none">No bills due this period.</li>`}
-        </ul>
-      </article>`;
-    };
-
-    return `
-    <div style="display:grid;gap:24px">
-      <section class="stub" aria-label="Next paycheck">
+    const heroHtml = `<section class="stub" aria-label="Next paycheck">
         <div class="stub-main">
-          <span class="label">Next payday · ${fmtDay(c0.date)}</span>
+          <span class="label">${isToday ? "Payday is today" : "Next payday"} · ${fmtDay(hero.start)}</span>
           <span class="sub">${short0 ? "This paycheck is short by" : "Left over after bills, spending and goals"}</span>
-          <span class="big ${short0 ? "short" : ""}">${money(Math.abs(c0.left))}</span>
+          <span class="big ${short0 ? "short" : ""}">${money(Math.abs(h.left))}</span>
           <span class="pill ${short0 ? "bad" : "ok"}">${short0 ? "Needs attention" : "Everything covered"}</span>
+          ${isToday ? `<div class="stub-act"><button class="btn primary" data-act="ci" data-key="${hero.key}">Start payday check-in</button></div>` : ""}
         </div>
         <div class="stub-lines">
           <span class="label">Net pay breakdown</span>
-          <div class="line-row"><span>Take-home pay</span><b>${money(state.pay)}</b></div>
-          <div class="line-row"><span><i class="dot" style="background:var(--bills)"></i>Reserve for ${c0.bills.length} bill${c0.bills.length === 1 ? "" : "s"}</span><b>−${money(c0.billTotal)}</b></div>
-          <div class="line-row"><span><i class="dot" style="background:var(--living)"></i>Everyday spending</span><b>−${money(c0.spendPer)}</b></div>
-          <div class="line-row"><span><i class="dot" style="background:var(--goals)"></i>Savings &amp; goals</span><b>−${money(c0.goalsPer)}</b></div>
-          <div class="line-row total"><span><i class="dot" style="background:${short0 ? "var(--warn)" : "var(--spend)"}"></i>${short0 ? "Short" : "Left over"}</span><span>${short0 ? "−" : ""}${money(Math.abs(c0.left))}</span></div>
+          ${payLines}
+          <div class="line-row"><span><i class="dot" style="background:var(--bills)"></i>${state.smooth ? "Bill fund" : `Bills due (${h.mb.length})`}</span><b>−${money(h.reserve)}</b></div>
+          ${h.aside > 0 ? `<div class="line-row"><span><i class="dot" style="background:var(--bills);opacity:.55"></i>Yearly bills set-aside</span><b>−${money(h.aside)}</b></div>` : ""}
+          <div class="line-row"><span><i class="dot" style="background:var(--living)"></i>Everyday spending</span><b>−${money(h.spend)}</b></div>
+          <div class="line-row"><span><i class="dot" style="background:var(--goals)"></i>Savings &amp; goals</span><b>−${money(h.goals)}</b></div>
+          <div class="line-row total"><span><i class="dot" style="background:${short0 ? "var(--warn)" : "var(--spend)"}"></i>${short0 ? "Short" : "Left over"}</span><span>${short0 ? "−" : ""}${money(Math.abs(h.left))}</span></div>
         </div>
-      </section>
+      </section>`;
 
+    const dv = state.dashView || "checks";
+    const seg = `<div class="seg" role="group" aria-label="View">${[["checks", "Paychecks"], ["week", "Week"], ["month", "Month"], ["year", "Year"]].map(([k, l]) => `<button data-act="dv" data-v="${k}" aria-pressed="${dv === k}">${l}</button>`).join("")}</div>`;
+    const body = dv === "week" ? weekView() : dv === "month" ? monthView() : dv === "year" ? yearView() : checksView(up);
+
+    return `<div style="display:grid;gap:24px">
+      ${heroHtml}
+      ${banner}
       <section class="section">
         <div class="section-head"><h2>Needs your attention</h2></div>
         <div class="attn">
-          ${attn.length ? attn.map(a => `<div class="attn-item ${a.cls}"><span class="tag">${a.tag}</span><span>${a.text}</span></div>`).join("")
+          ${attn.length ? attn.map(a => `<div class="attn-item ${a.cls}"><span class="tag">${a.tag}</span><div>${a.text}${a.act || ""}</div></div>`).join("")
             : `<div class="all-clear">Nothing needs attention. Every upcoming paycheck covers its bills, spending and goals.</div>`}
         </div>
       </section>
-
       <section class="section">
-        <div class="section-head"><h2>Your next ${p.checks.length} paychecks</h2><span class="label">${FREQ[state.freq].label}</span></div>
-        <div class="checks">${p.checks.map(checkCard).join("")}</div>
-      </section>
-
-      <section class="section">
-        <div class="section-head"><h2>Your month at a glance</h2><span class="label">Monthly average</span></div>
-        <div class="month">
-          <div><span class="label">Income</span><b>${money(p.incomeMonthly)}</b></div>
-          <div><span class="label">Bills</span><b>${money(p.billsMonthly)}</b></div>
-          <div><span class="label">Spending</span><b>${money(p.spendMonthly)}</b></div>
-          <div><span class="label">Goals</span><b>${money(p.goalsMonthly)}</b></div>
-          <div><span class="label">Left over</span><b style="color:${p.freeMonthly < 0 ? "var(--warn)" : "var(--spend)"}">${money(p.freeMonthly)}</b></div>
-        </div>
+        ${seg}
+        ${body}
       </section>
     </div>`;
   }
 
+  function checksView(up) {
+    const list = up.slice(0, up.length && up[0] && state.incomes.some(i => i.freq === "weekly") ? 5 : 4);
+    if (!list.length) return "";
+    const ds = list.map(p => detail(p));
+    const scale = Math.max(...list.map(p => p.total), ...ds.map(d => d.reserve + d.aside + d.spend + d.goals));
+    const pct = n => Math.max(0, n) / scale * 100;
+    return `<div class="section-head"><h2>Your next ${list.length} paychecks</h2></div>
+      <div class="checks">${list.map((p, i) => {
+        const d = ds[i], over = Math.max(0, -d.left);
+        let room = p.total;
+        const seg = (amt, color) => { const w = pct(Math.min(amt, Math.max(0, room))); room -= amt; return `<span style="width:${w}%;background:${color}"></span>`; };
+        return `<article class="check">
+          <div class="check-top">
+            <div>
+              <span class="label">Check ${i + 1} of ${list.length}</span>
+              <h3>${fmtDay(p.start)}</h3>
+              <span class="note">${p.items.length > 1 ? p.items.map(x => esc(x.name)).join(" + ") + " · " : ""}Covers ${fmtShort(p.start)} – ${fmtShort(addDays(p.end, -1))}</span>
+            </div>
+            <div class="amt"><span class="label">${d.left < 0 ? "Short" : "Left over"}</span><b class="${d.left < 0 ? "short" : ""}">${money(Math.abs(d.left))}</b></div>
+          </div>
+          <div class="bar" role="img" aria-label="Pay ${money(p.total)}: bills ${money(d.reserve + d.aside)}, spending ${money(d.spend)}, goals ${money(d.goals)}, ${d.left < 0 ? "short " + money(over) : "left over " + money(d.left)}">
+            ${seg(d.reserve + d.aside, "var(--bills)")}${seg(d.spend, "var(--living)")}${seg(d.goals, "var(--goals)")}
+            ${d.left > 0 ? `<span style="width:${pct(d.left)}%;background:var(--spend)"></span>` : ""}
+            ${over ? `<span class="over" style="width:${pct(over)}%"></span>` : ""}
+          </div>
+          <div class="legend">
+            <span><i class="dot" style="background:var(--bills)"></i>Bills ${money(d.reserve + d.aside)}</span>
+            <span><i class="dot" style="background:var(--living)"></i>Spending ${money(d.spend)}</span>
+            <span><i class="dot" style="background:var(--goals)"></i>Goals ${money(d.goals)}</span>
+          </div>
+          <ul class="bill-list">
+            ${d.bills.length ? d.bills.map(b => `<li><span class="d">${fmtShort(b.date)}</span><span>${esc(b.name || "Bill")}${isMonthlyBill(b) ? "" : '<span class="est">set aside</span>'}</span><span>${money(b.amt)}</span></li>`).join("")
+              : `<li class="none">No bills due this period.</li>`}
+          </ul>
+        </article>`;
+      }).join("")}</div>`;
+  }
+
+  function evList(from, to) {
+    const pcs = allPaychecks(from, to), due = occ(from, to);
+    const days = {};
+    pcs.forEach(p => p.items.forEach(x => (days[p.key] = days[p.key] || []).push(`<div class="ev in"><span>Payday · ${esc(x.name)}${x.est ? '<span class="est">est.</span>' : ""}</span><b>+${money(x.amt)}</b></div>`)));
+    due.forEach(b => { const k = iso(b.date); (days[k] = days[k] || []).push(`<div class="ev"><span>${esc(b.name || "Bill")}${state.paid[b.key] ? ' <small>· paid</small>' : ""}${isMonthlyBill(b) ? "" : ' <small>· from set-aside</small>'}</span><b>${money(b.amt)}</b></div>`); });
+    const keys = Object.keys(days).sort();
+    if (!keys.length) return `<div class="all-clear">No paydays or bills in this period.</div>`;
+    return `<div class="events">${keys.map(k => `<div class="evday"><span class="d">${fmtShort(parse(k))}</span><div class="evlist">${days[k].join("")}</div></div>`).join("")}</div>`;
+  }
+
+  function weekView() {
+    const ws = addDays(today, -today.getDay() + weekOff * 7), we = addDays(ws, 7);
+    const s = summary(ws, we);
+    const cats = state.spend.filter(x => +x.amt > 0);
+    return `<div class="viewhead">
+        <div class="stepper"><button class="arrow" data-act="wk" data-d="-1" aria-label="Previous week" ${weekOff <= -8 ? "disabled" : ""}>‹</button>
+          <b>${fmtShort(ws)} – ${fmtShort(addDays(we, -1))}</b>
+          <button class="arrow" data-act="wk" data-d="1" aria-label="Next week" ${weekOff >= 52 ? "disabled" : ""}>›</button></div>
+        ${weekOff ? `<button class="btn ghost" data-act="wk" data-d="0">This week</button>` : `<span class="label">This week</span>`}
+      </div>
+      ${tiles(s)}
+      ${evList(ws, we)}
+      ${cats.length ? `<div class="mini"><span class="label">Weekly spending budget</span>${cats.map(x => `<div class="ev"><span>${esc(x.name || "Spending")}</span><b>${money(x.per === "week" ? +x.amt : +x.amt * 12 / 52)}</b></div>`).join("")}</div>` : ""}`;
+  }
+
+  function monthView() {
+    const ms = addMonths(today, monthOff), me = addMonths(ms, 1);
+    const s = summary(ms, me), extra = extraChecks(ms.getFullYear(), ms.getMonth());
+    return `<div class="viewhead">
+        <div class="stepper"><button class="arrow" data-act="mo" data-d="-1" aria-label="Previous month" ${monthOff <= -3 ? "disabled" : ""}>‹</button>
+          <b>${fmtMonth(ms)}</b>
+          <button class="arrow" data-act="mo" data-d="1" aria-label="Next month" ${monthOff >= 12 ? "disabled" : ""}>›</button></div>
+        ${extra ? `<span class="xbadge">${s.pcs.length} paychecks this month</span>` : monthOff ? `<button class="btn ghost" data-act="mo" data-d="0">This month</button>` : ""}
+      </div>
+      ${tiles(s)}
+      ${evList(ms, me)}`;
+  }
+
+  function yearView() {
+    const ys = addMonths(today, 0), ye = addMonths(ys, 12);
+    const tot = summary(ys, ye);
+    const rows = [];
+    for (let i = 0; i < 12; i++) {
+      const a = addMonths(ys, i), b = addMonths(ys, i + 1);
+      rows.push({ a, s: summary(a, b), x: extraChecks(a.getFullYear(), a.getMonth()) });
+    }
+    const scale = Math.max(...rows.map(r => Math.max(r.s.income, r.s.bills + r.s.spend + r.s.goals)), 1);
+    const pct = n => Math.max(0, n) / scale * 100;
+    const nm = state.bills.filter(b => !isMonthlyBill(b) && +b.amt > 0);
+    const xMonths = rows.filter(r => r.x).map(r => r.a.toLocaleDateString("en-US", { month: "long" }));
+    return `<div class="viewhead"><b style="font:700 18px var(--f-display)">Next 12 months</b>
+        ${xMonths.length ? `<span class="xbadge">Extra paychecks: ${xMonths.join(", ")}</span>` : ""}</div>
+      ${tiles(tot)}
+      <div class="yr">${rows.map(r => {
+        let room = r.s.income;
+        const seg = (amt, color) => { const w = pct(Math.min(amt, Math.max(0, room))); room -= amt; return `<span style="width:${w}%;background:${color}"></span>`; };
+        const over = Math.max(0, -r.s.left);
+        return `<div class="yr-row">
+          <span class="m">${r.a.toLocaleDateString("en-US", { month: "short" })}${r.a.getMonth() === 0 || r === rows[0] ? " '" + String(r.a.getFullYear()).slice(2) : ""}<small class="${r.x ? "x" : ""}">${r.s.pcs.length} check${r.s.pcs.length === 1 ? "" : "s"}</small></span>
+          <div class="bar" role="img" aria-label="${fmtMonth(r.a)}: in ${money(r.s.income)}, left over ${money(r.s.left)}">
+            ${seg(r.s.bills, "var(--bills)")}${seg(r.s.spend, "var(--living)")}${seg(r.s.goals, "var(--goals)")}
+            ${r.s.left > 0 ? `<span style="width:${pct(r.s.left)}%;background:var(--spend)"></span>` : ""}
+            ${over ? `<span class="over" style="width:${pct(over)}%"></span>` : ""}
+          </div>
+          <span class="v" style="color:${r.s.left < 0 ? "var(--warn)" : "var(--spend)"}">${money(r.s.left)}</span>
+        </div>`; }).join("")}</div>
+      <div class="legend"><span><i class="dot" style="background:var(--bills)"></i>Bills</span><span><i class="dot" style="background:var(--living)"></i>Spending</span><span><i class="dot" style="background:var(--goals)"></i>Goals</span><span><i class="dot" style="background:var(--spend)"></i>Left over</span></div>
+      ${nm.length ? `<div class="mini"><span class="label">Yearly &amp; quarterly bills</span>${nm.map(b => { const nd = billDates(b, today, addDays(today, 400))[0]; return `<div class="ev"><span>${esc(b.name || "Bill")} <small>· ${BILLF[b.freq].label.toLowerCase()}${nd ? ", next " + fmtShort(nd) : ""}</small></span><b>${money(b.amt)}</b></div>`; }).join("")}</div>` : ""}`;
+  }
+
+  function renderCheckin() {
+    const p = timeline().find(x => x.key === ciKey);
+    if (!p) { tab = "dash"; return renderDash(); }
+    const d = detail(p), its = ciItems(p);
+    const moves = its.filter(it => !it.bill), pays = its.filter(it => it.bill);
+    const pr = progress(p);
+    const varItems = p.items.filter(x => x.variable);
+    const row = it => {
+      const done = isDone(p.key, it), id = "ci-" + it.k.replace(/[^a-z0-9]/gi, "-");
+      return `<label class="ci-item ${done ? "done" : ""}" for="${id}">
+        <input type="checkbox" id="${id}" data-ci="${esc(it.k)}" ${done ? "checked" : ""}>
+        <span class="t"><span>${esc(it.label)}</span>${it.bill ? `<small>Due ${fmtDay(it.bill.date)}${isMonthlyBill(it.bill) ? "" : " · use your set-aside money"}</small>` : ""}</span>
+        <b>${money(it.amt)}</b>
+      </label>`;
+    };
+    return `<section class="panel">
+      <div><button class="btn ghost" data-go="dash">‹ Dashboard</button></div>
+      <div><span class="label">Payday check-in</span><h2>${fmtDay(p.start)} paycheck</h2></div>
+      <p>Work down the list as you move money and pay bills. Your progress saves as you go.</p>
+      <div style="display:grid;gap:6px"><span class="note" id="ciProg">${pr.done} of ${pr.total} done</span><div class="progress"><span style="width:${pr.total ? pr.done / pr.total * 100 : 0}%"></span></div></div>
+      ${varItems.length ? `<div class="ci-sec"><h3>How much did you get paid?</h3>
+        ${varItems.map(x => `<div class="field"><label for="act-${x.id}">${esc(x.name)}</label><div class="money"><input type="number" id="act-${x.id}" data-act-inc="${x.id}" min="0" step="0.01" inputmode="decimal" value="${x.est ? "" : x.amt}" placeholder="Estimate: ${r2(x.amt)}"></div></div>`).join("")}
+        <span class="hint">The plan uses your estimate until you enter the real amount.</span></div>` : ""}
+      ${moves.length ? `<div class="ci-sec"><h3>Move your money</h3><div class="ci-list">${moves.map(row).join("")}</div></div>` : ""}
+      ${pays.length ? `<div class="ci-sec"><h3>Pay your bills</h3><div class="ci-list">${pays.map(row).join("")}</div></div>` : ""}
+      <div class="ci-sec"><h3>Keep for everyday spending</h3><div class="ev" style="font-size:15px"><span>Groceries, gas and the rest until ${fmtShort(addDays(p.end, -1))}</span><b>${money(d.spend)}</b></div></div>
+      <div class="ci-total"><span>${d.left < 0 ? "This paycheck is short by" : "Extra left over"}</span><b class="${d.left < 0 ? "short" : ""}">${money(Math.abs(d.left))}</b></div>
+      <div class="ed-foot"><span></span><button class="btn primary" data-go="dash">Done</button></div>
+    </section>`;
+  }
+
+  // ---------- editors ----------
+  const dayOpts = sel => Array.from({ length: 31 }, (_, i) => `<option value="${i + 1}" ${+sel === i + 1 ? "selected" : ""}>${i === 30 ? "31st / last day" : ordinal(i + 1)}</option>`).join("");
+  const freqChips = (name, cur, attr) => `<div class="chips" role="radiogroup">${Object.entries(FREQ).map(([k, f]) => `<input type="radio" name="${name}" id="${name}-${k}" value="${k}" ${attr} ${cur === k ? "checked" : ""}><label for="${name}-${k}">${f.label}</label>`).join("")}</div>`;
+  const incomeMonthlyBase = () => sum(state.incomes, i => (+i.pay || 0) * FREQ[i.freq].perYear / 12);
+
   function renderPay() {
     return `<section class="panel">
       <div><span class="label">Step 1 of 4</span><h2>Your paycheck</h2></div>
-      <p>Enter what actually lands in your account after taxes and deductions.</p>
-      <div class="field">
-        <span class="label">How often do you get paid?</span>
-        <div class="chips" role="radiogroup">
-          ${Object.entries(FREQ).map(([k, f]) => `<input type="radio" name="freq" id="freq-${k}" value="${k}" ${state.freq === k ? "checked" : ""}><label for="freq-${k}">${f.label}</label>`).join("")}
-        </div>
-      </div>
-      <div class="grid2">
-        <div class="field">
-          <label for="pay-amt">Take-home pay per paycheck</label>
-          <div class="money"><input type="number" id="pay-amt" min="0" step="0.01" inputmode="decimal" value="${state.pay || ""}" placeholder="1850"></div>
-        </div>
-        ${state.freq === "semi" ? `<div class="field">
-          <span class="label">Your two paydays each month</span>
-          <div class="grid2" style="gap:8px">
-            <select id="semi-a" aria-label="First payday">${dayOpts(state.semiA || 1)}</select>
-            <select id="semi-b" aria-label="Second payday">${dayOpts(state.semiB || 15)}</select>
+      <p>Enter what actually lands in your account after taxes and deductions. Add a second income for a partner or side job.</p>
+      ${state.incomes.map((inc, idx) => {
+        const ch = inc.change;
+        return `<div class="income-card" data-inc="${inc.id}">
+        <div class="ihead"><span class="label">Income ${idx + 1}</span>${idx > 0 ? `<button class="btn ghost danger" data-act="rm-inc">Remove</button>` : ""}</div>
+        <div class="field"><label for="inc-name-${inc.id}">Name</label><input type="text" id="inc-name-${inc.id}" data-i="name" value="${esc(inc.name)}" placeholder="My paycheck"></div>
+        <div class="field"><span class="label">How often is this paid?</span>${freqChips("freq-" + inc.id, inc.freq, 'data-i="freq"')}</div>
+        <div class="grid2">
+          <div class="field">
+            <label for="inc-pay-${inc.id}">${inc.variable ? "Typical take-home per paycheck" : "Take-home pay per paycheck"}</label>
+            <div class="money"><input type="number" id="inc-pay-${inc.id}" data-i="pay" min="0" step="0.01" inputmode="decimal" value="${inc.pay || ""}" placeholder="1850"></div>
           </div>
-          <span class="hint">In shorter months, a 29th–31st payday falls on the last day of the month.</span>
-        </div>` : `<div class="field">
-          <label for="pay-next">Next payday</label>
-          <input type="date" id="pay-next" value="${esc(state.next)}">
-          <span class="hint">${state.freq === "monthly" ? "You'll be paid on this day every month." : "Pick any upcoming payday. We count forward from it."}</span>
-        </div>`}
-      </div>
-      <div class="ed-foot"><span class="sum">Monthly average: <b id="payMonthly">${money((+state.pay || 0) * FREQ[state.freq].perYear / 12)}</b></span>
+          ${inc.freq === "semi" ? `<div class="field"><span class="label">The two paydays each month</span>
+              <div class="grid2" style="gap:8px"><select id="inc-a-${inc.id}" data-i="semiA" aria-label="First payday">${dayOpts(inc.semiA || 1)}</select><select id="inc-b-${inc.id}" data-i="semiB" aria-label="Second payday">${dayOpts(inc.semiB || 15)}</select></div></div>`
+            : `<div class="field"><label for="inc-next-${inc.id}">Next payday</label><input type="date" id="inc-next-${inc.id}" data-i="next" value="${esc(inc.next)}">
+              <span class="hint">${inc.freq === "monthly" ? "Paid on this day every month." : "Pick any upcoming payday. We count forward from it."}</span></div>`}
+        </div>
+        <label class="opt-check" for="inc-var-${inc.id}"><input type="checkbox" id="inc-var-${inc.id}" data-i="variable" ${inc.variable ? "checked" : ""}>
+          <span>My pay changes from check to check<small>For hourly, tips or gig work. Use a typical or slightly low amount, then enter the real amount at each payday check-in.</small></span></label>
+        <label class="opt-check" for="inc-chg-${inc.id}"><input type="checkbox" id="inc-chg-${inc.id}" data-i="changing" ${ch ? "checked" : ""}>
+          <span>My pay schedule is changing<small>New job, or switching from monthly to every 2 weeks? Plan the gap so nothing gets missed.</small></span></label>
+        ${ch ? `<div class="sub-block">
+          <div class="field"><span class="label">New schedule</span>${freqChips("cfreq-" + inc.id, ch.freq, 'data-c="freq"')}</div>
+          <div class="grid2">
+            <div class="field"><label for="chg-pay-${inc.id}">New take-home per paycheck</label><div class="money"><input type="number" id="chg-pay-${inc.id}" data-c="pay" min="0" step="0.01" inputmode="decimal" value="${ch.pay || ""}" placeholder="0"></div></div>
+            <div class="field"><label for="chg-date-${inc.id}">First paycheck on the new schedule</label><input type="date" id="chg-date-${inc.id}" data-c="date" value="${esc(ch.date || "")}"></div>
+          </div>
+          ${ch.freq === "semi" ? `<div class="field"><span class="label">New paydays each month</span><div class="grid2" style="gap:8px"><select id="chg-a-${inc.id}" data-c="semiA" aria-label="First payday">${dayOpts(ch.semiA || 1)}</select><select id="chg-b-${inc.id}" data-c="semiB" aria-label="Second payday">${dayOpts(ch.semiB || 15)}</select></div></div>` : ""}
+        </div>` : ""}
+      </div>`; }).join("")}
+      ${state.incomes.length < 3 ? `<div><button class="btn" data-act="add-inc">+ Add another income</button></div>` : ""}
+      <div class="ed-foot"><span class="sum">Monthly average: <b id="payMonthly">${money(incomeMonthlyBase())}</b></span>
         <button class="btn primary" data-go="bills">Next: add bills</button></div>
     </section>`;
   }
 
   function renderBills() {
-    const total = state.bills.reduce((s, b) => s + (+b.amt || 0), 0);
     return `<section class="panel bills-ed">
       <div><span class="label">Step 2 of 4</span><h2>Your bills</h2></div>
-      <p>Add each bill and the day of the month it's due. Clear Payday assigns it to the paycheck that lands before it.</p>
+      <p>Add each bill, how often it comes, and when it's due. Yearly and quarterly bills are set aside a little at a time from every paycheck.</p>
       <div class="rows">
-        <div class="rowhead label"><span>Bill</span><span>Amount</span><span>Due day</span><span></span></div>
+        <div class="rowhead label"><span>Bill</span><span>Amount</span><span>How often</span><span>Due</span><span></span></div>
         ${state.bills.map(b => `<div class="erow" data-id="${b.id}">
           <input class="n" type="text" id="bill-name-${b.id}" data-f="name" value="${esc(b.name)}" placeholder="Bill name" aria-label="Bill name">
           <div class="money"><input type="number" id="bill-amt-${b.id}" data-f="amt" min="0" step="0.01" inputmode="decimal" value="${b.amt || ""}" placeholder="0" aria-label="Amount"></div>
-          <select id="bill-day-${b.id}" data-f="day" aria-label="Due day">${Array.from({ length: 31 }, (_, i) => `<option value="${i + 1}" ${+b.day === i + 1 ? "selected" : ""}>${ordinal(i + 1)}</option>`).join("")}</select>
+          <select id="bill-freq-${b.id}" data-f="freq" aria-label="How often">${Object.entries(BILLF).map(([k, f]) => `<option value="${k}" ${(b.freq || "monthly") === k ? "selected" : ""}>${f.label}</option>`).join("")}</select>
+          ${isMonthlyBill(b) ? `<select class="due" id="bill-day-${b.id}" data-f="day" aria-label="Due day">${dayOpts(b.day || 1).replace(/>(\d+)(st|nd|rd|th)</g, ">Due the $1$2<")}</select>`
+            : `<input class="due" type="date" id="bill-due-${b.id}" data-f="due" value="${esc(b.due || "")}" aria-label="Next due date">`}
           <button class="del" data-del="bill" aria-label="Remove ${esc(b.name || "bill")}">×</button>
         </div>`).join("")}
         ${state.bills.length ? "" : `<p class="note" style="margin:0">No bills yet. Start with rent or your largest bill.</p>`}
       </div>
       <div class="ed-foot">
         <button class="btn" id="addBill">+ Add a bill</button>
-        <span class="sum">Bills per month: <b id="billTotal">${money(total)}</b></span>
+        <span class="sum">About <b id="billTotal">${money(billsMonthlyAll())}</b> per month</span>
       </div>
-      <div class="ed-foot"><button class="btn ghost" data-go="pay">Back</button><button class="btn primary" data-go="spend">Next: everyday spending</button></div>
+      <label class="opt-check" for="smooth"><input type="checkbox" id="smooth" ${state.smooth ? "checked" : ""}>
+        <span>Even out my paychecks<small>Set aside the same amount for bills from every paycheck, instead of paying each bill from the check right before it. Helps when one paycheck has to cover rent.</small></span></label>
+      <div class="ed-foot"><button class="btn ghost" data-go="pay">Back</button>
+        <span style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" data-go="tools">Calendar reminders</button><button class="btn primary" data-go="spend">Next: everyday spending</button></span></div>
     </section>`;
   }
 
   function renderSpend() {
-    const monthly = state.spend.reduce((s, x) => s + (+x.amt || 0) * (x.per === "week" ? 52 / 12 : 1), 0);
     return `<section class="panel spend-ed">
       <div><span class="label">Step 3 of 4</span><h2>Everyday spending</h2></div>
       <p>Gas, groceries and other costs that aren't fixed bills. Enter what you usually spend per week or per month, and it's set aside from every paycheck.</p>
@@ -543,20 +898,18 @@ footer { color: var(--muted); font-size: 13px; text-align: center; }
       </div>
       <div class="ed-foot">
         <button class="btn" id="addSpend">+ Add a category</button>
-        <span class="sum">About <b id="spendTotal">${money(monthly)}</b> per month</span>
+        <span class="sum">About <b id="spendTotal">${money(spendMonthlyOf())}</b> per month</span>
       </div>
       <div class="ed-foot"><button class="btn ghost" data-go="bills">Back</button><button class="btn primary" data-go="goals">Next: goals</button></div>
     </section>`;
   }
 
   function suggestion() {
-    const per = FREQ[state.freq].perYear;
-    const income = (+state.pay || 0) * per / 12;
-    const bills = state.bills.reduce((s, b) => s + (+b.amt || 0), 0);
-    const avail = r2(income - bills - spendMonthlyOf());
+    const yearIncome = sum(allPaychecks(today, addDays(today, 365)), p => p.total);
+    const avail = r2(yearIncome / 12 - billsMonthlyAll() - spendMonthlyOf());
     const pctC = state.cushion ?? 10;
     const cushion = avail > 0 ? Math.round(avail * pctC / 100) : 0;
-    const planned = state.goals.filter(isPlanned).reduce((s, g) => s + goalMonthly(g), 0);
+    const planned = sum(state.goals.filter(isPlanned), goalMonthly);
     const rest = Math.max(0, Math.floor(avail - cushion - planned));
     const hasS = state.goals.some(g => g.kind === "save"), hasD = state.goals.some(g => g.kind === "debt");
     let share = { balanced: 0.5, debt: 0.3, savings: 0.7 }[state.split || "balanced"];
@@ -566,7 +919,7 @@ footer { color: var(--muted); font-size: 13px; text-align: center; }
   }
   function suggestBody() {
     const x = suggestion();
-    if (!(+state.pay > 0)) return `<p class="note" style="margin:0">Add your paycheck first, and this will show what you can afford.</p>`;
+    if (!state.incomes.some(incomeReady)) return `<p class="note" style="margin:0">Add your paycheck first, and this will show what you can afford.</p>`;
     if (x.avail <= 0) return `<p class="warn" style="margin:0">Your bills and everyday spending add up to more than your income (${money(-x.avail)} over each month). Trim everyday spending before setting goals.</p>`;
     const over = x.avail - x.cushion - x.planned < 0;
     return `<p style="margin:0">After bills and everyday spending, you have <b>${money(x.avail)}</b> a month.</p>
@@ -581,7 +934,6 @@ footer { color: var(--muted); font-size: 13px; text-align: center; }
   }
 
   function renderGoals() {
-    const total = state.goals.reduce((s, g) => s + goalMonthly(g), 0);
     const chip = (name, val, label, cur) => `<input type="radio" name="${name}" id="${name}-${val}" value="${val}" ${String(cur) === String(val) ? "checked" : ""}><label for="${name}-${val}">${label}</label>`;
     return `<section class="panel goals-ed">
       <div><span class="label">Step 4 of 4</span><h2>Savings &amp; goals</h2></div>
@@ -615,62 +967,110 @@ footer { color: var(--muted); font-size: 13px; text-align: center; }
       </div>
       <div class="ed-foot">
         <button class="btn" id="addGoal">+ Add a goal</button>
-        <span class="sum">Goals per month: <b id="goalTotal">${money(total)}</b></span>
+        <span class="sum">Goals per month: <b id="goalTotal">${money(goalsMonthlyOf())}</b></span>
       </div>
       <div class="ed-foot"><button class="btn ghost" data-go="spend">Back</button><button class="btn primary" data-go="dash">See my dashboard</button></div>
     </section>`;
   }
 
-  function renderBackup() {
-    return `<section class="panel">
-      <div><h2>Backup &amp; restore</h2></div>
-      <p>Your plan is saved only in this browser. Copy your backup code and keep it somewhere safe, like a note on your phone. Paste it here on any device to restore your plan.</p>
-      <div class="field">
-        <label for="backupOut">Your backup code</label>
-        <textarea id="backupOut" readonly>${esc(encode())}</textarea>
-        <div class="row" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button class="btn primary" id="copyBackup">Copy backup code</button><span class="msg" id="copyMsg"></span></div>
-      </div>
-      <div class="field">
-        <label for="restoreIn">Restore from a backup code</label>
-        <textarea id="restoreIn" placeholder="Paste a code that starts with CP1:"></textarea>
-        <div class="row" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button class="btn" id="restoreBtn">Restore plan</button><span class="msg" id="restoreMsg"></span></div>
-        <span class="hint">Restoring replaces the plan currently in this browser.</span>
-      </div>
-    </section>`;
+  function renderTools() {
+    return `<div class="tools-grid">
+      <section class="panel">
+        <div><h2>Calendar reminders</h2></div>
+        <p>Get a reminder the day before each bill is due, and on payday to do your check-in. Works with Google Calendar, Apple Calendar and Outlook.</p>
+        <label class="opt-check" for="remBills"><input type="checkbox" id="remBills" checked><span>Bill due dates<small>Reminder at 9 AM the day before.</small></span></label>
+        <label class="opt-check" for="remPay"><input type="checkbox" id="remPay" checked><span>Paydays<small>Reminder at 9 AM on payday to do your check-in.</small></span></label>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button class="btn primary" id="dlCal">Add to my calendar</button><span class="msg" id="calMsg"></span></div>
+        <span class="hint">This downloads a calendar file. Open it and choose your calendar app to add the reminders. If you change your bills later, delete the old Clear Payday events and add them again.</span>
+      </section>
+      <section class="panel">
+        <div><h2>Backup &amp; restore</h2></div>
+        <p>Your plan is saved only in this browser. Copy your backup code and keep it somewhere safe, like a note on your phone. Paste it here on any device to restore your plan.</p>
+        <div class="field">
+          <label for="backupOut">Your backup code</label>
+          <textarea id="backupOut" readonly>${esc(encode())}</textarea>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button class="btn primary" id="copyBackup">Copy backup code</button><span class="msg" id="copyMsg"></span></div>
+        </div>
+        <div class="field">
+          <label for="restoreIn">Restore from a backup code</label>
+          <textarea id="restoreIn" placeholder="Paste a code that starts with CP1:"></textarea>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button class="btn" id="restoreBtn">Restore plan</button><span class="msg" id="restoreMsg"></span></div>
+          <span class="hint">Restoring replaces the plan currently in this browser.</span>
+        </div>
+      </section>
+    </div>`;
   }
 
-  function dayOpts(sel) { return Array.from({ length: 31 }, (_, i) => `<option value="${i + 1}" ${+sel === i + 1 ? "selected" : ""}>${i === 30 ? "31st / last day" : ordinal(i + 1)}</option>`).join(""); }
-  function ordinal(n) { const s = ["th", "st", "nd", "rd"], v = n % 100; return n + (s[(v - 20) % 10] || s[v] || s[0]); }
   function encode() { return "CP1:" + btoa(unescape(encodeURIComponent(JSON.stringify({ ...state, example: false })))); }
   function decode(code) {
-    const s = code.trim().replace(/^CP1:/, "");
-    const obj = JSON.parse(decodeURIComponent(escape(atob(s))));
+    const obj = JSON.parse(decodeURIComponent(escape(atob(code.trim().replace(/^CP1:/, "")))));
     if (!valid(obj)) throw new Error("bad");
-    return obj;
+    return migrate(obj);
+  }
+
+  // ---------- calendar file ----------
+  const ymd = d => `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}`;
+  const icsText = s => String(s).replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\n/g, "\\n");
+  function byDay(day) { return day >= 31 ? "BYMONTHDAY=-1" : day === 30 ? "BYMONTHDAY=28,29,30;BYSETPOS=-1" : day === 29 ? "BYMONTHDAY=28,29;BYSETPOS=-1" : `BYMONTHDAY=${day}`; }
+  function buildIcs(bills, pays) {
+    const stamp = new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d+/, "");
+    const L = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Clear Payday//Planner//EN", "CALSCALE:GREGORIAN", "METHOD:PUBLISH", "X-WR-CALNAME:Clear Payday"];
+    const ev = (id, start, summary, desc, rrule, trigger) => {
+      L.push("BEGIN:VEVENT", `UID:${id}@clearpayday`, `DTSTAMP:${stamp}`, `DTSTART;VALUE=DATE:${ymd(start)}`, `DTEND;VALUE=DATE:${ymd(addDays(start, 1))}`,
+        `SUMMARY:${icsText(summary)}`, `DESCRIPTION:${icsText(desc)}`, "TRANSP:TRANSPARENT");
+      if (rrule) L.push(`RRULE:${rrule}`);
+      L.push("BEGIN:VALARM", "ACTION:DISPLAY", `DESCRIPTION:${icsText(summary)}`, `TRIGGER:${trigger}`, "END:VALARM", "END:VEVENT");
+    };
+    let n = 0;
+    if (bills) state.bills.filter(b => +b.amt > 0).forEach(b => {
+      const nd = billDates(b, today, addDays(today, 400))[0]; if (!nd) return;
+      const months = BILLF[b.freq || "monthly"].months;
+      const day = isMonthlyBill(b) ? Math.max(1, b.day | 0) : parse(b.due).getDate();
+      ev("bill-" + b.id, nd, `Due: ${b.name || "Bill"} (${money(b.amt)})`, `${b.name || "Bill"} is due. Open Clear Payday to mark it paid.`, `FREQ=MONTHLY;INTERVAL=${months};${byDay(day)}`, "-PT15H"); n++;
+    });
+    if (pays) state.incomes.filter(incomeReady).forEach(inc => {
+      const nm = inc.name || "Payday";
+      const scheds = [];
+      const cd = inc.change && parse(inc.change.date) && +inc.change.pay > 0 ? parse(inc.change.date) : null;
+      scheds.push({ s: inc, from: today, until: cd });
+      if (cd) scheds.push({ s: { freq: inc.change.freq, next: inc.change.date, semiA: inc.change.semiA, semiB: inc.change.semiB }, from: cd > today ? cd : today, until: null });
+      scheds.forEach((x, j) => {
+        if (x.until && x.until <= today) return;
+        const first = schedDates(x.s, x.from, addDays(x.from, 70))[0]; if (!first) return;
+        let rule;
+        if (x.s.freq === "weekly") rule = "FREQ=WEEKLY;INTERVAL=1";
+        else if (x.s.freq === "biweekly") rule = "FREQ=WEEKLY;INTERVAL=2";
+        else if (x.s.freq === "monthly") rule = `FREQ=MONTHLY;${byDay(parse(x.s.next).getDate())}`;
+        else { const a = Math.min(+x.s.semiA || 1, +x.s.semiB || 15), b = Math.max(+x.s.semiA || 1, +x.s.semiB || 15); rule = `FREQ=MONTHLY;BYMONTHDAY=${a},${b >= 31 ? -1 : b}`; }
+        if (x.until) rule += `;UNTIL=${ymd(addDays(x.until, -1))}`;
+        ev(`pay-${inc.id}-${j}`, first, `Payday: ${nm}`, "Open Clear Payday and do your payday check-in.", rule, "PT9H"); n++;
+      });
+    });
+    L.push("END:VCALENDAR");
+    return { text: L.map(l => { const out = []; while (l.length > 74) { out.push(l.slice(0, 74)); l = " " + l.slice(74); } out.push(l); return out.join("\r\n"); }).join("\r\n") + "\r\n", n };
   }
 
   // ---------- render & events ----------
   function render() {
+    _tl = null; _dm = {};
     document.querySelectorAll("#nav button").forEach(b => b.setAttribute("aria-selected", String(b.dataset.tab === tab)));
     document.getElementById("exampleBanner").hidden = !state.example;
-    view.innerHTML = ({ dash: renderDash, pay: renderPay, bills: renderBills, spend: renderSpend, goals: renderGoals, backup: renderBackup })[tab]();
+    view.innerHTML = ({ dash: renderDash, pay: renderPay, bills: renderBills, spend: renderSpend, goals: renderGoals, tools: renderTools, checkin: renderCheckin })[tab]();
   }
   function go(t) { tab = t; render(); window.scrollTo({ top: 0 }); }
   function touched() { if (state.example) { state.example = false; document.getElementById("exampleBanner").hidden = true; } save(); }
+  const refocus = id => { const el = document.getElementById(id); if (el) el.focus({ preventScroll: true }); };
 
   document.getElementById("nav").addEventListener("click", e => { const b = e.target.closest("button[data-tab]"); if (b) go(b.dataset.tab); });
 
-  // Inline confirm for clearing examples
-  const bannerBtns = document.getElementById("bannerBtns");
-  const bannerText = document.getElementById("bannerText");
+  const bannerBtns = document.getElementById("bannerBtns"), bannerText = document.getElementById("bannerText");
   bannerBtns.addEventListener("click", e => {
     const id = e.target.id;
     if (id === "clearExample") {
       bannerText.innerHTML = "<b>Clear the example numbers?</b> You'll start with an empty plan.";
       bannerBtns.innerHTML = `<button class="btn primary" id="confirmClear">Yes, clear them</button><button class="btn ghost" id="cancelClear">Keep examples</button>`;
-    } else if (id === "confirmClear") {
-      state = blank(); save(); resetBanner(); go("pay");
-    } else if (id === "cancelClear") resetBanner();
+    } else if (id === "confirmClear") { state = blank(); save(); resetBanner(); go("pay"); }
+    else if (id === "cancelClear") resetBanner();
   });
   function resetBanner() {
     bannerText.innerHTML = "<b>You're looking at example numbers.</b> Clear them to set up your own plan.";
@@ -680,8 +1080,21 @@ footer { color: var(--muted); font-size: 13px; text-align: center; }
   view.addEventListener("click", e => {
     const t = e.target;
     const goBtn = t.closest("[data-go]"); if (goBtn) return go(goBtn.dataset.go);
-    if (t.id === "addBill") { state.bills.push({ id: uid(), name: "", amt: 0, day: 1 }); touched(); render(); const r = view.querySelectorAll(".erow"); r[r.length - 1]?.querySelector("input")?.focus(); return; }
-    if (t.id === "addSpend") { state.spend.push({ id: uid(), name: "", amt: 0, per: "month" }); touched(); render(); const r = view.querySelectorAll(".erow"); r[r.length - 1]?.querySelector("input")?.focus(); return; }
+    const act = t.closest("[data-act]");
+    if (act) {
+      const a = act.dataset.act;
+      if (a === "dv") { state.dashView = act.dataset.v; save(); render(); return; }
+      if (a === "wk") { const d = +act.dataset.d; weekOff = d === 0 ? 0 : weekOff + d; render(); return; }
+      if (a === "mo") { const d = +act.dataset.d; monthOff = d === 0 ? 0 : monthOff + d; render(); return; }
+      if (a === "ci") { ciKey = act.dataset.key; go("checkin"); return; }
+      if (a === "smooth-on") { state.smooth = true; touched(); render(); return; }
+      if (a === "add-inc") { state.incomes.push(newIncome(state.incomes.length === 1 ? "Second income" : "Third income")); touched(); render(); refocus("inc-name-" + state.incomes[state.incomes.length - 1].id); return; }
+      if (a === "rm-inc") { const id = act.closest("[data-inc]").dataset.inc; state.incomes = state.incomes.filter(i => i.id !== id); touched(); render(); return; }
+    }
+    const lastRowFocus = () => { const r = view.querySelectorAll(".erow"); r[r.length - 1]?.querySelector("input")?.focus(); };
+    if (t.id === "addBill") { state.bills.push({ id: uid(), name: "", amt: 0, freq: "monthly", day: 1 }); touched(); render(); lastRowFocus(); return; }
+    if (t.id === "addSpend") { state.spend.push({ id: uid(), name: "", amt: 0, per: "month" }); touched(); render(); lastRowFocus(); return; }
+    if (t.id === "addGoal") { state.goals.push({ id: uid(), name: "", amt: 0, kind: "save" }); touched(); render(); lastRowFocus(); return; }
     if (t.id === "applySuggest") {
       const x = suggestion();
       let saves = state.goals.filter(g => g.kind === "save");
@@ -692,9 +1105,20 @@ footer { color: var(--muted); font-size: 13px; text-align: center; }
       if (debts.length) spread(debts, x.debt);
       touched(); render(); return;
     }
-    if (t.id === "addGoal") { state.goals.push({ id: uid(), name: "", amt: 0, kind: "save" }); touched(); render(); const r = view.querySelectorAll(".erow"); r[r.length - 1]?.querySelector("input")?.focus(); return; }
     const del = t.closest("[data-del]");
     if (del) { const id = del.closest(".erow").dataset.id; const list = { bill: "bills", spend: "spend", goal: "goals" }[del.dataset.del]; state[list] = state[list].filter(x => x.id !== id); touched(); render(); return; }
+    if (t.id === "dlCal") {
+      const msg = document.getElementById("calMsg");
+      const { text, n } = buildIcs(document.getElementById("remBills").checked, document.getElementById("remPay").checked);
+      if (!n) { msg.className = "msg bad"; msg.textContent = "Add a paycheck or bills first."; return; }
+      try {
+        const url = URL.createObjectURL(new Blob([text], { type: "text/calendar" }));
+        const a = document.createElement("a"); a.href = url; a.download = "clear-payday-reminders.ics"; document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 4000);
+        msg.className = "msg ok"; msg.textContent = `Downloaded ${n} reminder${n === 1 ? "" : "s"}. Open the file to add them.`;
+      } catch (err) { msg.className = "msg bad"; msg.textContent = "Your browser blocked the download. Try opening this page in Chrome or Safari."; }
+      return;
+    }
     if (t.id === "copyBackup") {
       const ta = document.getElementById("backupOut"), msg = document.getElementById("copyMsg");
       const fallback = () => { ta.focus(); ta.select(); msg.className = "msg"; msg.textContent = "Selected. Copy it with your device's copy command."; };
@@ -708,21 +1132,74 @@ footer { color: var(--muted); font-size: 13px; text-align: center; }
     }
   });
 
+  view.addEventListener("change", e => {
+    const t = e.target;
+    if (t.type === "checkbox") {
+      if (t.dataset.ci) {
+        const k = t.dataset.ci;
+        if (k.startsWith("b:")) { const bk = k.slice(2); if (t.checked) state.paid[bk] = true; else delete state.paid[bk]; }
+        else { const c = state.checkins[ciKey] = state.checkins[ciKey] || { done: {} }; c.done = c.done || {}; if (t.checked) c.done[k] = true; else delete c.done[k]; }
+        touched(); render(); refocus(t.id); return;
+      }
+      if (t.id === "smooth") { state.smooth = t.checked; touched(); return; }
+      const card = t.closest("[data-inc]");
+      if (card) {
+        const inc = state.incomes.find(i => i.id === card.dataset.inc); if (!inc) return;
+        if (t.dataset.i === "variable") inc.variable = t.checked;
+        if (t.dataset.i === "changing") inc.change = t.checked ? { freq: inc.freq === "monthly" ? "biweekly" : "monthly", pay: inc.pay || 0, date: "", semiA: 1, semiB: 15 } : null;
+        touched(); render(); refocus(t.id); return;
+      }
+      return;
+    }
+    if (t.dataset.actInc) {
+      const inc = state.incomes.find(i => i.id === t.dataset.actInc); if (!inc) return;
+      inc.actuals = inc.actuals || {};
+      if (t.value === "") delete inc.actuals[ciKey]; else inc.actuals[ciKey] = parseFloat(t.value) || 0;
+      touched(); render(); return;
+    }
+  });
+
   view.addEventListener("input", e => {
     const t = e.target;
-    if (t.name === "freq") { state.freq = t.value; touched(); render(); document.getElementById("freq-" + t.value)?.focus(); return; }
-    else if (t.name === "cushion") state.cushion = +t.value;
+    if (t.type === "checkbox" || t.dataset.actInc) return;
+    const card = t.closest("[data-inc]");
+    if (card) {
+      const inc = state.incomes.find(i => i.id === card.dataset.inc); if (!inc) return;
+      if (t.dataset.i) {
+        const f = t.dataset.i;
+        inc[f] = f === "pay" ? (parseFloat(t.value) || 0) : (f === "semiA" || f === "semiB") ? +t.value : t.value;
+        touched();
+        if (f === "freq") { render(); refocus(t.id); return; }
+      } else if (t.dataset.c && inc.change) {
+        const f = t.dataset.c;
+        inc.change[f] = f === "pay" ? (parseFloat(t.value) || 0) : (f === "semiA" || f === "semiB") ? +t.value : t.value;
+        touched();
+        if (f === "freq") { render(); refocus(t.id); return; }
+      }
+      const pm = document.getElementById("payMonthly"); if (pm) pm.textContent = money(incomeMonthlyBase());
+      return;
+    }
+    if (t.name === "cushion") state.cushion = +t.value;
     else if (t.name === "split") state.split = t.value;
-    else if (t.id === "semi-a") state.semiA = +t.value;
-    else if (t.id === "semi-b") state.semiB = +t.value;
-    else if (t.id === "pay-amt") state.pay = parseFloat(t.value) || 0;
-    else if (t.id === "pay-next") state.next = t.value;
     else if (t.dataset.f) {
-      const row = t.closest(".erow"); const list = row.closest(".bills-ed") ? state.bills : row.closest(".spend-ed") ? state.spend : state.goals;
+      const row = t.closest(".erow"); if (!row) return;
+      const list = row.closest(".bills-ed") ? state.bills : row.closest(".spend-ed") ? state.spend : state.goals;
       const item = list.find(x => x.id === row.dataset.id); if (!item) return;
-      item[t.dataset.f] = (t.dataset.f === "amt" || t.dataset.f === "target") ? (parseFloat(t.value) || 0) : t.dataset.f === "day" ? +t.value : t.value;
+      const f = t.dataset.f;
+      item[f] = (f === "amt" || f === "target") ? (parseFloat(t.value) || 0) : f === "day" ? +t.value : t.value;
+      if (list === state.bills && f === "freq") {
+        if (item.freq !== "monthly" && !parse(item.due)) {
+          const day = Math.max(1, item.day | 0);
+          let d = new Date(today.getFullYear(), today.getMonth(), Math.min(day, dim(today.getFullYear(), today.getMonth())));
+          if (d < today) d = new Date(today.getFullYear(), today.getMonth() + 1, Math.min(day, dim(today.getFullYear(), today.getMonth() + 1)));
+          item.due = iso(d);
+        }
+        if (item.freq === "monthly" && parse(item.due)) item.day = parse(item.due).getDate();
+        touched(); render(); refocus(t.id); return;
+      }
+      if (list === state.bills && f === "due" && parse(item.due)) item.day = parse(item.due).getDate();
       if (list === state.goals) {
-        if (t.dataset.f === "kind") { touched(); render(); document.getElementById("goal-kind-" + item.id)?.focus(); return; }
+        if (f === "kind") { touched(); render(); refocus(t.id); return; }
         const auto = isPlanned(item) && +item.target > 0 && monthsUntil(item.by);
         const amtEl = document.getElementById("goal-amt-" + item.id);
         if (amtEl && t !== amtEl) { amtEl.readOnly = !!auto; if (auto) amtEl.value = goalMonthly(item); }
@@ -731,10 +1208,9 @@ footer { color: var(--muted); font-size: 13px; text-align: center; }
       }
     } else return;
     touched();
-    const pm = document.getElementById("payMonthly"); if (pm) pm.textContent = money((+state.pay || 0) * FREQ[state.freq].perYear / 12);
-    const bt = document.getElementById("billTotal"); if (bt) bt.textContent = money(state.bills.reduce((s, b) => s + (+b.amt || 0), 0));
-    const st = document.getElementById("spendTotal"); if (st) st.textContent = money(state.spend.reduce((s, x) => s + (+x.amt || 0) * (x.per === "week" ? 52 / 12 : 1), 0));
-    const gt = document.getElementById("goalTotal"); if (gt) gt.textContent = money(state.goals.reduce((s, g) => s + goalMonthly(g), 0));
+    const bt = document.getElementById("billTotal"); if (bt) bt.textContent = money(billsMonthlyAll());
+    const st = document.getElementById("spendTotal"); if (st) st.textContent = money(spendMonthlyOf());
+    const gt = document.getElementById("goalTotal"); if (gt) gt.textContent = money(goalsMonthlyOf());
     const sb = document.getElementById("suggestBody"); if (sb) sb.innerHTML = suggestBody();
   });
 
