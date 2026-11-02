@@ -232,6 +232,12 @@ footer { color: var(--muted); font-size: 13px; text-align: center; }
 .stub-act { margin-top: 10px; }
 .bills-ed .rowhead, .bills-ed .erow { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1.3fr) minmax(0, 1.3fr) 40px; }
 .tools-grid { display: grid; gap: 20px; }
+.imp { background: var(--sunk); border: 1px solid var(--line); border-radius: var(--r); padding: 16px; display: grid; gap: 12px; }
+.imp .line-row b { text-align: right; }
+.imp-errs ul { margin: 6px 0 0; padding-left: 18px; color: var(--warn); font-size: 14px; display: grid; gap: 2px; }
+.vh { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; }
+.vh:focus-visible + label { outline: 2px solid var(--accent); outline-offset: 2px; }
+.btnrow { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 @media (max-width: 720px) {
   .bills-ed .erow { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 40px; }
   .bills-ed .erow .n { grid-column: 1 / -1; }
@@ -976,6 +982,18 @@ footer { color: var(--muted); font-size: 13px; text-align: center; }
   function renderTools() {
     return `<div class="tools-grid">
       <section class="panel">
+        <div><h2>Excel &amp; Google Sheets</h2></div>
+        <p>Download your plan as an Excel file. Edit the green tabs in Excel or Google Sheets, then import the file to bring your changes back.</p>
+        <div class="btnrow"><button class="btn primary" id="xlsOut">Download Excel file</button><span class="msg" id="xlsMsg"></span></div>
+        <div class="btnrow">
+          <input type="file" id="xlsIn" class="vh" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+          <label class="btn" for="xlsIn" style="cursor:pointer">Import from Excel</label>
+          <span class="msg" id="xlsInMsg"></span>
+        </div>
+        <div id="importBox">${pendingImport ? importPreviewHtml(pendingImport) : ""}</div>
+        <span class="hint">Using Google Sheets? Choose File, then Download, then Microsoft Excel (.xlsx), and import that file here. Your own tabs and columns are kept, but formulas, charts and formatting in them may not be.</span>
+      </section>
+      <section class="panel">
         <div><h2>Calendar reminders</h2></div>
         <p>Get a reminder the day before each bill is due, and on payday to do your check-in. Works with Google Calendar, Apple Calendar and Outlook.</p>
         <label class="opt-check" for="remBills"><input type="checkbox" id="remBills" checked><span>Bill due dates<small>Reminder at 9 AM the day before.</small></span></label>
@@ -1050,6 +1068,371 @@ footer { color: var(--muted); font-size: 13px; text-align: center; }
     return { text: L.map(l => { const out = []; while (l.length > 74) { out.push(l.slice(0, 74)); l = " " + l.slice(74); } out.push(l); return out.join("\r\n"); }).join("\r\n") + "\r\n", n };
   }
 
+  // ---------- Excel (xlsx) export & import, built in ----------
+  const XL_MIME = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+  const CRC_T = (() => { const t = new Uint32Array(256); for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
+  const crc32 = u8 => { let c = 0xFFFFFFFF; for (let i = 0; i < u8.length; i++) c = CRC_T[(c ^ u8[i]) & 0xFF] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; };
+  function zipStore(files) {
+    const enc = new TextEncoder(), parts = [], central = []; let off = 0;
+    const now = new Date(), dt = ((now.getFullYear() - 1980) << 9) | ((now.getMonth() + 1) << 5) | now.getDate(), tm = (now.getHours() << 11) | (now.getMinutes() << 5);
+    files.forEach(([name, text]) => {
+      const nb = enc.encode(name), data = enc.encode(text), crc = crc32(data);
+      const h = new DataView(new ArrayBuffer(30));
+      h.setUint32(0, 0x04034b50, true); h.setUint16(4, 20, true); h.setUint16(6, 0x0800, true); h.setUint16(8, 0, true);
+      h.setUint16(10, tm, true); h.setUint16(12, dt, true); h.setUint32(14, crc, true); h.setUint32(18, data.length, true); h.setUint32(22, data.length, true);
+      h.setUint16(26, nb.length, true); h.setUint16(28, 0, true);
+      parts.push(new Uint8Array(h.buffer), nb, data);
+      const c = new DataView(new ArrayBuffer(46));
+      c.setUint32(0, 0x02014b50, true); c.setUint16(4, 20, true); c.setUint16(6, 20, true); c.setUint16(8, 0x0800, true); c.setUint16(10, 0, true);
+      c.setUint16(12, tm, true); c.setUint16(14, dt, true); c.setUint32(16, crc, true); c.setUint32(20, data.length, true); c.setUint32(24, data.length, true);
+      c.setUint16(28, nb.length, true); c.setUint32(42, off, true);
+      central.push(new Uint8Array(c.buffer), nb);
+      off += 30 + nb.length + data.length;
+    });
+    const csize = central.reduce((s, p) => s + p.length, 0);
+    const e = new DataView(new ArrayBuffer(22));
+    e.setUint32(0, 0x06054b50, true); e.setUint16(8, files.length, true); e.setUint16(10, files.length, true); e.setUint32(12, csize, true); e.setUint32(16, off, true);
+    return new Blob([...parts, ...central, new Uint8Array(e.buffer)], { type: XL_MIME });
+  }
+  async function unzip(buf) {
+    const u8 = new Uint8Array(buf), dv = new DataView(buf);
+    let eo = -1;
+    for (let i = u8.length - 22; i >= Math.max(0, u8.length - 70000); i--) if (dv.getUint32(i, true) === 0x06054b50) { eo = i; break; }
+    if (eo < 0) throw new Error("notzip");
+    const n = dv.getUint16(eo + 10, true); let p = dv.getUint32(eo + 16, true);
+    const out = {}, dec = new TextDecoder();
+    for (let k = 0; k < n; k++) {
+      if (dv.getUint32(p, true) !== 0x02014b50) throw new Error("badzip");
+      const method = dv.getUint16(p + 10, true), csz = dv.getUint32(p + 20, true), nl = dv.getUint16(p + 28, true), el = dv.getUint16(p + 30, true), cl = dv.getUint16(p + 32, true), lo = dv.getUint32(p + 42, true);
+      const name = dec.decode(u8.subarray(p + 46, p + 46 + nl));
+      const ds = lo + 30 + dv.getUint16(lo + 26, true) + dv.getUint16(lo + 28, true);
+      out[name.replace(/^\//, "")] = { method, data: u8.subarray(ds, ds + csz) };
+      p += 46 + nl + el + cl;
+    }
+    return {
+      async text(name) {
+        const f = out[name]; if (!f) return null;
+        if (f.method === 0) return dec.decode(f.data);
+        if (f.method !== 8 || typeof DecompressionStream === "undefined") throw new Error("deflate");
+        const s = new Blob([f.data]).stream().pipeThrough(new DecompressionStream("deflate-raw"));
+        return await new Response(s).text();
+      }
+    };
+  }
+  const xesc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, "");
+  const colL = i => { let s = ""; i++; while (i > 0) { const m = (i - 1) % 26; s = String.fromCharCode(65 + m) + s; i = Math.floor((i - 1) / 26); } return s; };
+  const colN = s => { let n = 0; for (const ch of s) n = n * 26 + ch.charCodeAt(0) - 64; return n - 1; };
+  const EPOCH = Date.UTC(1899, 11, 30);
+  const serialOf = d => (Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) - EPOCH) / DAY;
+  const dateOfSerial = n => { const u = new Date(EPOCH + Math.round(n) * DAY); return new Date(u.getUTCFullYear(), u.getUTCMonth(), u.getUTCDate()); };
+  // styles: 0 normal · 1 header · 2 money · 3 date · 4 month · 5 title · 6 wrapped text
+  const STYLES = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><numFmts count="3"><numFmt numFmtId="164" formatCode="&quot;$&quot;#,##0.00"/><numFmt numFmtId="165" formatCode="mmm d, yyyy"/><numFmt numFmtId="166" formatCode="mmm yyyy"/></numFmts><fonts count="3"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="16"/><color rgb="FF0D6A4C"/><name val="Calibri"/></font></fonts><fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FFDCEEE6"/><bgColor indexed="64"/></patternFill></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="7"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1"/><xf numFmtId="164" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/><xf numFmtId="165" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/><xf numFmtId="166" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/><xf numFmtId="0" fontId="2" fillId="0" borderId="0" xfId="0" applyFont="1"/><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0" applyAlignment="1"><alignment wrapText="1" vertical="top"/></xf></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>`;
+  // cell spec: string | number | null | {v, s} | {date: Date, s}
+  function sheetXml(sh) {
+    const rows = sh.rows.map((row, ri) => {
+      const cells = row.map((c, ci) => {
+        if (c === null || c === undefined || c === "") return "";
+        const ref = colL(ci) + (ri + 1);
+        let v = c, s = 0;
+        if (typeof c === "object") { s = c.s || 0; v = c.date ? serialOf(c.date) : c.v; }
+        if (ri === 0 && sh.header) s = 1;
+        if (v === null || v === undefined || v === "") return "";
+        if (typeof v === "number" && isFinite(v)) return `<c r="${ref}"${s ? ` s="${s}"` : ""}><v>${v}</v></c>`;
+        return `<c r="${ref}" t="inlineStr"${s ? ` s="${s}"` : ""}><is><t xml:space="preserve">${xesc(v)}</t></is></c>`;
+      }).join("");
+      return `<row r="${ri + 1}">${cells}</row>`;
+    }).join("");
+    const cols = sh.widths ? `<cols>${sh.widths.map((w, i) => `<col min="${i + 1}" max="${i + 1}" width="${w}" customWidth="1"/>`).join("")}</cols>` : "";
+    const pane = sh.header ? `<sheetViews><sheetView workbookViewId="0"><pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>` : `<sheetViews><sheetView workbookViewId="0"/></sheetViews>`;
+    return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetPr>${sh.tab ? `<tabColor rgb="${sh.tab}"/>` : ""}</sheetPr>${pane}${cols}<sheetData>${rows}</sheetData></worksheet>`;
+  }
+  function buildXlsx(sheets) {
+    const files = [];
+    files.push(["[Content_Types].xml", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>${sheets.map((_, i) => `<Override PartName="/xl/worksheets/sheet${i + 1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`).join("")}</Types>`]);
+    files.push(["_rels/.rels", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>`]);
+    files.push(["xl/workbook.xml", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><bookViews><workbookView activeTab="0"/></bookViews><sheets>${sheets.map((s, i) => `<sheet name="${xesc(s.name)}" sheetId="${i + 1}" r:id="rId${i + 1}"/>`).join("")}</sheets></workbook>`]);
+    files.push(["xl/_rels/workbook.xml.rels", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">${sheets.map((_, i) => `<Relationship Id="rId${i + 1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${i + 1}.xml"/>`).join("")}<Relationship Id="rId${sheets.length + 1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`]);
+    files.push(["xl/styles.xml", STYLES]);
+    sheets.forEach((s, i) => files.push([`xl/worksheets/sheet${i + 1}.xml`, sheetXml(s)]));
+    return zipStore(files);
+  }
+  async function readXlsx(buf) {
+    const z = await unzip(buf);
+    const parse = t => new DOMParser().parseFromString(t, "application/xml");
+    const tags = (node, name) => [...node.getElementsByTagNameNS("*", name)];
+    const wbText = await z.text("xl/workbook.xml"); if (!wbText) throw new Error("noworkbook");
+    const wb = parse(wbText);
+    const wbPr = tags(wb, "workbookPr")[0];
+    const d1904 = wbPr && /^(1|true)$/i.test(wbPr.getAttribute("date1904") || "");
+    const rels = {};
+    const relText = await z.text("xl/_rels/workbook.xml.rels");
+    if (relText) tags(parse(relText), "Relationship").forEach(r => {
+      let t = r.getAttribute("Target") || "";
+      t = t.startsWith("/") ? t.slice(1) : "xl/" + t;
+      const segs = []; t.split("/").forEach(s => { if (s === "..") segs.pop(); else if (s && s !== ".") segs.push(s); });
+      rels[r.getAttribute("Id")] = segs.join("/");
+    });
+    let shared = [];
+    const ssText = await z.text("xl/sharedStrings.xml");
+    if (ssText) shared = tags(parse(ssText), "si").map(si => tags(si, "t").filter(t => !(t.parentNode && t.parentNode.localName === "rPh")).map(t => t.textContent).join(""));
+    const out = [];
+    for (const sh of tags(wb, "sheet")) {
+      const rid = sh.getAttributeNS("http://schemas.openxmlformats.org/officeDocument/2006/relationships", "id") || sh.getAttribute("r:id");
+      const path = rels[rid]; if (!path) continue;
+      const xt = await z.text(path); if (!xt) continue;
+      const doc = parse(xt), rows = [];
+      tags(doc, "row").forEach((row, idx) => {
+        const r = (+row.getAttribute("r") || idx + 1) - 1, arr = [];
+        tags(row, "c").forEach((c, ci) => {
+          const ref = c.getAttribute("r"), col = ref ? colN(ref.replace(/\d+/g, "")) : ci;
+          const t = c.getAttribute("t"), vEl = tags(c, "v")[0], raw = vEl ? vEl.textContent : "";
+          let v = "";
+          if (t === "s") v = shared[+raw] ?? "";
+          else if (t === "inlineStr") v = tags(c, "t").map(x => x.textContent).join("");
+          else if (t === "str" || t === "e") v = raw;
+          else if (t === "b") v = raw === "1";
+          else if (raw !== "") v = d1904 ? +raw + 1462 : +raw;
+          arr[col] = v;
+        });
+        for (let i = 0; i < arr.length; i++) if (arr[i] === undefined) arr[i] = "";
+        rows[r] = arr;
+      });
+      for (let i = 0; i < rows.length; i++) if (!rows[i]) rows[i] = [];
+      out.push({ name: sh.getAttribute("name") || "Sheet", rows });
+    }
+    return out;
+  }
+
+  // ----- mapping between the plan and the workbook -----
+  const ID_H = "ID (don't change)";
+  const XTABS = {
+    paycheck: { name: "Paycheck", list: "incomes", cols: [["name", "Name"], ["freq", "How often"], ["pay", "Take-home per paycheck"], ["next", "Next payday"], ["semiA", "1st payday of month"], ["semiB", "2nd payday of month"], ["variable", "Pay changes check to check"], ["cfreq", "New schedule"], ["cpay", "New take-home"], ["cdate", "New schedule starts"], ["id", ID_H]], widths: [22, 16, 22, 16, 18, 18, 24, 16, 16, 20, 18] },
+    bills:    { name: "Bills", list: "bills", cols: [["name", "Bill"], ["amt", "Amount"], ["freq", "How often"], ["day", "Due day of month"], ["due", "Next due date"], ["id", ID_H]], widths: [26, 12, 16, 18, 16, 18] },
+    spending: { name: "Spending", list: "spend", cols: [["name", "Category"], ["amt", "Amount"], ["per", "Per"], ["id", ID_H]], widths: [26, 12, 10, 18] },
+    goals:    { name: "Goals", list: "goals", cols: [["name", "Goal"], ["kind", "Type"], ["amt", "Per month"], ["target", "Save up (target)"], ["by", "By (month)"], ["id", ID_H]], widths: [26, 18, 12, 18, 14, 18] }
+  };
+  const VIEW_ONLY = ["readme", "plan", "year", "paidbills"];
+  const norm = s => String(s == null ? "" : s).toLowerCase().replace(/\(view only\)/g, "").replace(/[^a-z0-9]/g, "");
+  const money$ = n => ({ v: r2(+n || 0), s: 2 });
+  const dateC = d => d ? { date: d, s: 3 } : "";
+  const monthC = d => d ? { date: d, s: 4 } : "";
+  const GREEN_TAB = "FF0D6A4C", GRAY_TAB = "FF9AA8A3";
+
+  function workbookSheets() {
+    const xc = state.xcols || {};
+    const tab = (key, rowsOf) => {
+      const T = XTABS[key], extra = xc[key] || [];
+      const head = T.cols.map(c => c[1]).concat(extra);
+      const rows = [head].concat(state[T.list].map(it => rowsOf(it).concat(extra.map(h => (it.x && it.x[h] !== undefined) ? it.x[h] : ""))));
+      return { name: T.name, header: true, tab: GREEN_TAB, widths: T.widths.concat(extra.map(() => 16)), rows };
+    };
+    const sheets = [];
+    sheets.push({ name: "Read Me", tab: GRAY_TAB, widths: [100], rows: [
+      [{ v: "Clear Payday: your plan in Excel", s: 5 }], [""],
+      [{ v: "Green tabs are yours to edit: Paycheck, Bills, Spending and Goals.", s: 6 }],
+      [{ v: "Gray tabs are view only. The app works them out for you, so changes there are ignored.", s: 6 }],
+      [{ v: "Add, change or delete rows freely. Keep the tab names and column headers the same.", s: 6 }],
+      [{ v: "Leave the ID column as it is. For a new row, leave the ID blank.", s: 6 }],
+      [{ v: "How often: Weekly, Every 2 weeks, Twice a month, Monthly. Bills can also be Every 3 months, Every 6 months or Yearly.", s: 6 }],
+      [{ v: "Monthly bills use Due day of month. Other bills use Next due date. Vacation and gift goals with a target and month work out their own monthly amount.", s: 6 }],
+      [{ v: "Your own tabs and columns are kept when you import, but formulas, charts and formatting in them may not be.", s: 6 }],
+      [""],
+      [{ v: "To bring changes back: open Clear Payday, go to Tools, then Import from Excel.", s: 6 }],
+      [{ v: "Using Google Sheets? Choose File, Download, Microsoft Excel (.xlsx), then import that file.", s: 6 }],
+      [""], ["Exported " + fmtDay(today) + ", " + today.getFullYear()]
+    ] });
+    sheets.push(tab("paycheck", i => [i.name || "", FREQ[i.freq].label, money$(i.pay), i.freq === "semi" ? "" : dateC(parse(i.next)),
+      i.freq === "semi" ? (+i.semiA || 1) : "", i.freq === "semi" ? (+i.semiB || 15) : "", i.variable ? "Yes" : "No",
+      i.change ? FREQ[i.change.freq].label : "", i.change ? money$(i.change.pay) : "", i.change ? dateC(parse(i.change.date)) : "", i.id]));
+    sheets.push(tab("bills", b => [b.name || "", money$(b.amt), BILLF[b.freq || "monthly"].label, isMonthlyBill(b) ? (+b.day || 1) : "", isMonthlyBill(b) ? "" : dateC(parse(b.due)), b.id]));
+    sheets.push(tab("spending", x => [x.name || "", money$(x.amt), x.per === "week" ? "Week" : "Month", x.id]));
+    sheets.push(tab("goals", g => {
+      const m = /^(\d{4})-(\d{2})$/.exec(g.by || "");
+      const planned = isPlanned(g);
+      return [g.name || "", KINDS[g.kind] || "Savings", money$(goalMonthly(g)), planned && +g.target ? money$(g.target) : "", planned && m ? monthC(new Date(+m[1], +m[2] - 1, 1)) : "", g.id];
+    }));
+    // view-only: plan
+    const plan = [["Payday", "Take-home", "Bills", "Yearly bills set-aside", "Everyday spending", "Savings & goals", "Left over", "Bills due this paycheck"]];
+    timeline().filter(p => p.end > today && p.start < addDays(today, 366)).forEach(p => {
+      const d = detail(p);
+      plan.push([dateC(p.start), money$(p.total), money$(d.reserve), money$(d.aside), money$(d.spend), money$(d.goals), money$(d.left),
+        d.bills.map(b => `${b.name || "Bill"} ${money(b.amt)} (${fmtShort(b.date)})`).join(", ")]);
+    });
+    sheets.push({ name: "Plan (view only)", header: true, tab: GRAY_TAB, widths: [16, 14, 12, 20, 18, 16, 12, 70], rows: plan });
+    const yr = [["Month", "Paychecks", "Coming in", "Bills", "Everyday spending", "Savings & goals", "Left over"]];
+    for (let i = 0; i < 12; i++) { const a = addMonths(today, i), s = summary(a, addMonths(today, i + 1)); yr.push([monthC(a), s.pcs.length, money$(s.income), money$(s.bills), money$(s.spend), money$(s.goals), money$(s.left)]); }
+    sheets.push({ name: "Year (view only)", header: true, tab: GRAY_TAB, widths: [14, 12, 14, 14, 18, 16, 14], rows: yr });
+    const paid = [["Due date", "Bill", "Amount"]];
+    Object.keys(state.paid || {}).map(k => { const [id, d] = k.split("|"); const b = state.bills.find(x => x.id === id); return { d: parse(d), b }; })
+      .filter(x => x.d && x.b).sort((a, b) => a.d - b.d).forEach(x => paid.push([dateC(x.d), x.b.name || "Bill", money$(x.b.amt)]));
+    sheets.push({ name: "Paid bills (view only)", header: true, tab: GRAY_TAB, widths: [16, 28, 12], rows: paid });
+    (state.xsheets || []).forEach(s => sheets.push({ name: s.name, rows: s.rows }));
+    return sheets;
+  }
+
+  // ----- reading values back -----
+  const numV = v => { if (typeof v === "number") return isFinite(v) ? v : null; const s = String(v).replace(/[$,\s]/g, ""); if (s === "") return null; const n = Number(s.replace(/^\((.*)\)$/, "-$1")); return isFinite(n) ? n : null; };
+  function dateV(v) {
+    if (v === "" || v === null || v === undefined) return null;
+    if (typeof v === "number") return v > 0 && v < 2958466 ? dateOfSerial(v) : null;
+    const s = String(v).trim();
+    let m = /^(\d{4})-(\d{1,2})-(\d{1,2})/.exec(s); if (m) return new Date(+m[1], +m[2] - 1, +m[3]);
+    m = /^(\d{1,2})\/(\d{1,2})\/(\d{2,4})$/.exec(s); if (m) return new Date(+m[3] < 100 ? 2000 + +m[3] : +m[3], +m[1] - 1, +m[2]);
+    m = /^(\d{4})-(\d{1,2})$/.exec(s); if (m) return new Date(+m[1], +m[2] - 1, 1);
+    const t = Date.parse(s); if (!isNaN(t)) { const d = new Date(t); return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+    return null;
+  }
+  const pick = (v, map) => map[norm(v)];
+  const FREQ_IN = { weekly: "weekly", week: "weekly", every2weeks: "biweekly", biweekly: "biweekly", everyotherweek: "biweekly", twiceamonth: "semi", semimonthly: "semi", semi: "semi", monthly: "monthly", month: "monthly" };
+  const BILLF_IN = { monthly: "monthly", month: "monthly", every3months: "quarterly", quarterly: "quarterly", every6months: "semiannual", semiannual: "semiannual", twiceayear: "semiannual", yearly: "yearly", annual: "yearly", annually: "yearly", year: "yearly" };
+  const PER_IN = { week: "week", weekly: "week", perweek: "week", month: "month", monthly: "month", permonth: "month" };
+  const KIND_IN = { savings: "save", saving: "save", save: "save", debtpayoff: "debt", debt: "debt", vacation: "trip", trip: "trip", travel: "trip", giftsoccasions: "gift", gifts: "gift", gift: "gift", giftsandoccasions: "gift" };
+  const yes = v => v === true || /^(yes|y|true|1|x)$/i.test(String(v).trim());
+  const dayV = v => { if (/^last/i.test(String(v).trim())) return 31; const n = numV(v); return n && n >= 1 && n <= 31 ? Math.round(n) : null; };
+
+  function parseTab(key, sheet, errs) {
+    const T = XTABS[key], rows = sheet.rows;
+    const head = (rows[0] || []).map(h => String(h == null ? "" : h).trim());
+    const known = {}; T.cols.forEach(([k, h]) => { known[norm(h)] = k; }); known.id = "id";
+    const map = head.map(h => known[norm(h)] || null);
+    const missing = T.cols.filter(([k]) => k !== "id" && !map.includes(k)).map(c => c[1]);
+    const required = { paycheck: ["name", "freq", "pay"], bills: ["name", "amt"], spending: ["name", "amt"], goals: ["name", "amt"] }[key];
+    const missingReq = T.cols.filter(([k]) => required.includes(k) && !map.includes(k)).map(c => c[1]);
+    if (missingReq.length) { errs.push(`${T.name} tab: couldn't find the column${missingReq.length > 1 ? "s" : ""} ${missingReq.join(", ")}, so this tab was skipped.`); return null; }
+    const extraHeads = head.map((h, i) => (!map[i] && h) ? h : null);
+    const items = [];
+    for (let r = 1; r < rows.length; r++) {
+      const row = rows[r] || [];
+      if (!row.some(v => v !== "" && v !== null && v !== undefined)) continue;
+      const g = {}; map.forEach((k, i) => { if (k) g[k] = row[i] === undefined ? "" : row[i]; });
+      const x = {}; extraHeads.forEach((h, i) => { if (h && row[i] !== "" && row[i] !== undefined) x[h] = row[i]; });
+      const where = `${T.name} row ${r + 1}`;
+      const fail = msg => errs.push(`${where}: ${msg}`);
+      const id = String(g.id || "").trim().slice(0, 40) || null;
+      const name = String(g.name ?? "").trim();
+      let it;
+      if (key === "paycheck") {
+        const freq = pick(g.freq, FREQ_IN); if (!freq) { fail(`"How often" should be Weekly, Every 2 weeks, Twice a month or Monthly.`); continue; }
+        const pay = numV(g.pay); if (pay === null || pay < 0) { fail("take-home pay isn't a number."); continue; }
+        const nx = dateV(g.next);
+        if (freq !== "semi" && !nx) { fail("add the next payday as a date."); continue; }
+        it = { name: name || "Paycheck", freq, pay, next: nx ? iso(nx) : "", semiA: dayV(g.semiA) || 1, semiB: dayV(g.semiB) || 15, variable: yes(g.variable), change: null };
+        const cf = pick(g.cfreq, FREQ_IN), cp = numV(g.cpay), cd = dateV(g.cdate);
+        if (cf && cp > 0 && cd) it.change = { freq: cf, pay: cp, date: iso(cd), semiA: 1, semiB: 15 };
+        else if (String(g.cfreq || "").trim() || String(g.cdate || "").trim()) errs.push(`${where}: the new schedule needs all three of New schedule, New take-home and New schedule starts, so it was left out.`);
+      } else if (key === "bills") {
+        const amt = numV(g.amt); if (amt === null || amt < 0) { fail("amount isn't a number."); continue; }
+        const bf = String(g.freq ?? "").trim() === "" ? "monthly" : pick(g.freq, BILLF_IN);
+        if (!bf) { fail(`"How often" should be Monthly, Every 3 months, Every 6 months or Yearly.`); continue; }
+        it = { name: name || "Bill", amt, freq: bf };
+        if (bf === "monthly") {
+          let day = dayV(g.day); const dd = dateV(g.due);
+          if (!day && dd) day = dd.getDate();
+          if (!day) { fail("add the due day of the month (1 to 31)."); continue; }
+          it.day = day;
+        } else {
+          const dd = dateV(g.due); if (!dd) { fail("add the next due date for this bill."); continue; }
+          it.due = iso(dd); it.day = dd.getDate();
+        }
+      } else if (key === "spending") {
+        const amt = numV(g.amt); if (amt === null || amt < 0) { fail("amount isn't a number."); continue; }
+        it = { name: name || "Spending", amt, per: pick(g.per, PER_IN) || "month" };
+      } else {
+        const kind = String(g.kind ?? "").trim() === "" ? "save" : pick(g.kind, KIND_IN);
+        if (!kind) { fail(`"Type" should be Savings, Debt payoff, Vacation or Gifts & occasions.`); continue; }
+        const amt = numV(g.amt), target = numV(g.target), by = dateV(g.by);
+        it = { name: name || "Goal", kind, amt: amt && amt > 0 ? amt : 0 };
+        if ((kind === "trip" || kind === "gift") && target > 0 && by) { it.target = target; it.by = ym(by); }
+        else if (amt === null && !(target > 0)) { fail("add an amount per month."); continue; }
+      }
+      it.id = id; if (Object.keys(x).length) it.x = x;
+      items.push(it);
+    }
+    return { items, extra: extraHeads.filter(Boolean), missing };
+  }
+
+  const FIELDS = { paycheck: ["name", "freq", "pay", "next", "semiA", "semiB", "variable", "change"], bills: ["name", "amt", "freq", "day", "due"], spending: ["name", "amt", "per"], goals: ["name", "kind", "amt", "target", "by"] };
+  function diffOf(key, oldL, newL) {
+    const f = FIELDS[key], sig = o => JSON.stringify(f.map(k => (k === "due" && (o.freq || "monthly") === "monthly") || (key === "goals" && k === "amt" && isPlanned(o) && +o.target > 0 && o.by) ? "" : (o[k] ?? "")).concat([JSON.stringify(o.x || {})]));
+    const old = new Map(oldL.map(o => [o.id, o]));
+    let changed = 0, added = 0;
+    const seen = new Set();
+    newL.forEach(n => { const o = n.id && old.get(n.id); if (o && !seen.has(n.id)) { seen.add(n.id); if (sig(o) !== sig(n)) changed++; } else { added++; } });
+    return { count: newL.length, changed, added, removed: oldL.filter(o => !seen.has(o.id)).length };
+  }
+
+  let pendingImport = null;
+  async function prepareImport(file) {
+    const errs = [], notes = [];
+    if (!/\.xlsx$/i.test(file.name || "")) throw new Error("type");
+    const sheets = await readXlsx(await file.arrayBuffer());
+    const found = {}, extras = [];
+    sheets.forEach(s => {
+      const n = norm(s.name);
+      const key = { paycheck: "paycheck", paychecks: "paycheck", income: "paycheck", bills: "bills", spending: "spending", everydayspending: "spending", goals: "goals" }[n];
+      if (key && !found[key]) found[key] = s;
+      else if (!VIEW_ONLY.includes(n) && s.rows.some(r => r && r.some(v => v !== "" && v !== null))) extras.push({ name: String(s.name).slice(0, 31), rows: s.rows.slice(0, 2000).map(r => (r || []).slice(0, 60).map(v => (typeof v === "string" ? v.slice(0, 2000) : v))) });
+    });
+    if (!Object.keys(found).length) throw new Error("notabs");
+    const next = {}, summaries = [];
+    for (const key of Object.keys(XTABS)) {
+      const T = XTABS[key];
+      if (!found[key]) { notes.push(`No ${T.name} tab, so your ${T.name.toLowerCase()} stay as they are.`); continue; }
+      const res = parseTab(key, found[key], errs);
+      if (!res) continue;
+      if (key === "paycheck" && !res.items.length) { errs.push("Paycheck tab: no paychecks could be read, so your paychecks stay as they are."); continue; }
+      next[key] = res;
+      summaries.push({ key, name: T.name, ...diffOf(key, state[T.list], res.items) });
+    }
+    let xs = extras;
+    if (JSON.stringify(xs).length > 400000) { xs = []; if (extras.length) notes.push(`Your own tabs (${extras.map(e => e.name).join(", ")}) are too large to keep in the app, so they were left out.`); }
+    pendingImport = { next, extras: xs, errs, notes, summaries, fileName: file.name };
+    return pendingImport;
+  }
+  function applyImport() {
+    const p = pendingImport; if (!p) return;
+    state.xcols = state.xcols || {};
+    Object.entries(p.next).forEach(([key, res]) => {
+      const T = XTABS[key], old = new Map(state[T.list].map(o => [o.id, o])), used = new Set();
+      state[T.list] = res.items.map(it => {
+        let id = it.id && !used.has(it.id) ? it.id : uid(); used.add(id);
+        const prev = old.get(id);
+        const out = { ...it, id };
+        if (key === "paycheck") { out.actuals = prev && prev.actuals ? prev.actuals : {}; }
+        if (!out.x) delete out.x;
+        return out;
+      });
+      state.xcols[key] = res.extra;
+    });
+    state.xsheets = p.extras;
+    pendingImport = null;
+    touched();
+  }
+  function importPreviewHtml(p) {
+    const line = s => `<div class="line-row"><span>${s.name}</span><b>${s.count} ${s.count === 1 ? "row" : "rows"}${[s.changed && `${s.changed} changed`, s.added && `${s.added} new`, s.removed && `${s.removed} removed`].filter(Boolean).length ? " · " + [s.changed && `${s.changed} changed`, s.added && `${s.added} new`, s.removed && `${s.removed} removed`].filter(Boolean).join(", ") : " · no changes"}</b></div>`;
+    const errs = p.errs.slice(0, 8);
+    return `<div class="imp">
+      <b>Ready to import ${esc(p.fileName)}</b>
+      <div class="lines">${p.summaries.map(line).join("")}</div>
+      ${p.extras.length ? `<p class="note" style="margin:0">Your own tabs will be kept: ${p.extras.map(e => esc(e.name)).join(", ")}.</p>` : ""}
+      ${p.notes.map(n => `<p class="note" style="margin:0">${esc(n)}</p>`).join("")}
+      ${errs.length ? `<div class="imp-errs"><b>Skipped ${p.errs.length} ${p.errs.length === 1 ? "row" : "rows"}</b><ul>${errs.map(e => `<li>${esc(e)}</li>`).join("")}</ul>${p.errs.length > errs.length ? `<span class="note">And ${p.errs.length - errs.length} more.</span>` : ""}</div>` : ""}
+      <p style="margin:0">This replaces the plan in this browser. Copy your backup code below first if you might want to undo.</p>
+      ${p.summaries.length ? `<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn primary" id="xlsApply">Replace my plan</button><button class="btn ghost" id="xlsCancel">Cancel</button></div>` : `<div><button class="btn ghost" id="xlsCancel">Close</button></div>`}
+    </div>`;
+  }
+  function downloadBlob(blob, name) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a"); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+  }
+
   // ---------- render & events ----------
   function render() {
     _tl = null; _dm = {};
@@ -1107,6 +1490,14 @@ footer { color: var(--muted); font-size: 13px; text-align: center; }
     }
     const del = t.closest("[data-del]");
     if (del) { const id = del.closest(".erow").dataset.id; const list = { bill: "bills", spend: "spend", goal: "goals" }[del.dataset.del]; state[list] = state[list].filter(x => x.id !== id); touched(); render(); return; }
+    if (t.id === "xlsOut") {
+      const msg = document.getElementById("xlsMsg");
+      try { downloadBlob(buildXlsx(workbookSheets()), `clear-payday-${iso(today)}.xlsx`); msg.className = "msg ok"; msg.textContent = "Downloaded. Open it in Excel or Google Sheets."; }
+      catch (err) { msg.className = "msg bad"; msg.textContent = "Your browser blocked the download. Try opening this page in Chrome or Safari."; }
+      return;
+    }
+    if (t.id === "xlsApply") { applyImport(); render(); const m = document.getElementById("xlsInMsg"); if (m) { m.className = "msg ok"; m.textContent = "Imported. Your plan is updated."; } return; }
+    if (t.id === "xlsCancel") { pendingImport = null; const b = document.getElementById("importBox"); if (b) b.innerHTML = ""; return; }
     if (t.id === "dlCal") {
       const msg = document.getElementById("calMsg");
       const { text, n } = buildIcs(document.getElementById("remBills").checked, document.getElementById("remPay").checked);
@@ -1134,6 +1525,21 @@ footer { color: var(--muted); font-size: 13px; text-align: center; }
 
   view.addEventListener("change", e => {
     const t = e.target;
+    if (t.id === "xlsIn") {
+      const f = t.files && t.files[0]; t.value = "";
+      const msg = document.getElementById("xlsInMsg"), box = document.getElementById("importBox");
+      if (!f) return;
+      msg.className = "msg"; msg.textContent = "Reading…";
+      prepareImport(f).then(p => { msg.textContent = ""; box.innerHTML = importPreviewHtml(p); box.scrollIntoView({ block: "nearest" }); })
+        .catch(err => {
+          pendingImport = null; box.innerHTML = ""; msg.className = "msg bad";
+          msg.textContent = err && err.message === "type" ? "Choose an Excel file that ends in .xlsx."
+            : err && err.message === "notabs" ? "This file doesn't have Paycheck, Bills, Spending or Goals tabs. Start from a file you downloaded here."
+            : err && err.message === "deflate" ? "This browser can't open that file. Try Chrome or Safari."
+            : "That file couldn't be read. Make sure it's saved as an Excel (.xlsx) file.";
+        });
+      return;
+    }
     if (t.type === "checkbox") {
       if (t.dataset.ci) {
         const k = t.dataset.ci;
